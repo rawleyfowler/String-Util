@@ -2,7 +2,7 @@
 use strict;
 use String::Util ':all';
 use Test;
-BEGIN { plan tests => 11 };
+BEGIN { plan tests => 13 };
 
 # general purpose variable
 my ($val, $org, $new, $got, $should);
@@ -10,6 +10,135 @@ my ($val, $org, $new, $got, $should);
 # stubs for comparison subroutines
 sub err;
 sub comp;
+
+
+#------------------------------------------------------------------------------
+# crunch
+#
+
+# basic crunching
+$val = "  Starflower \n\n\t  Miko     ";
+$val = crunch($val);
+comp $val, 'Starflower Miko';
+
+# crunch on undef returns undef
+if (defined crunch(undef))
+	{ err 'crunch', 'returned defined output for undefined input' }
+
+ok (1);
+#
+# crunch
+#------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------
+# hascontent
+#
+undef $val;
+hascontent($val) and err 'hascontent', 'returned true on undef';
+
+$val = '';
+hascontent($val) and err 'hascontent', 'returned true on empty string';
+
+$val = "   \t   \n\n  \r   \n\n\r     ";
+hascontent($val) and err 'hascontent', 'returned true on string that just has whitespace';
+
+$val = '0';
+hascontent($val) or err 'hascontent', 'returned false on zero';
+
+$val = ' x ';
+hascontent($val) or err 'hascontent', 'returned false defined string with an "x" in it';
+
+ok(1);
+#
+# hascontent
+#------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# trim
+#
+
+# basic trimming
+$val = '  steve     ';
+$val = trim($val);
+comp $val, 'steve';
+
+# trim on undef returns undef
+if (defined trim(undef))
+	{ err 'trim', 'returned defined output for undefined input' }
+
+ok (1);
+#
+# trim
+#------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------
+# no_space
+#
+$val = "  ok \n fine     ";
+$val = no_space($val);
+comp $val, 'okfine';
+
+ok (1);
+#
+# no_space
+#------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# htmlesc
+#
+
+# basic operation of htmlesc
+$val = '<>"&';
+$val = htmlesc($val);
+comp $val, '&lt;&gt;&quot;&amp;';
+
+# change undef to empty string
+undef $val;
+$val = htmlesc($val);
+comp $val, '';
+
+ok (1);
+#
+# htmlesc
+#------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# cellfill
+#
+
+# space-only string
+$val = '  ';
+$val = cellfill($val);
+comp $val, '&nbsp;';
+
+# undef string
+$val = undef;
+$val = cellfill($val);
+comp $val, '&nbsp;';
+
+# string with content
+$val = 'x';
+$val = cellfill($val);
+comp $val, 'x';
+
+ok (1);
+#
+# cellfill
+#------------------------------------------------------------------------------
+
+
+
+
+
+
+###########################
 
 
 #------------------------------------------------------------------------------
@@ -45,44 +174,6 @@ ok (1);
 # eq_undef, neundef
 #------------------------------------------------------------------------------
 
-
-
-#------------------------------------------------------------------------------
-# crunch
-#
-
-# basic crunching
-$val = "  Starflower \n\n\t  Miko     ";
-$val = crunch($val);
-comp $val, 'Starflower Miko';
-
-# crunch on undef returns undef
-if (defined crunch(undef))
-	{ err 'crunch', 'returned defined output for undefined input' }
-
-ok (1);
-#
-# crunch
-#------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------
-# trim
-#
-
-# basic trimming
-$val = '  steve     ';
-$val = trim($val);
-comp $val, 'steve';
-
-# trim on undef returns undef
-if (defined trim(undef))
-	{ err 'trim', 'returned defined output for undefined input' }
-
-ok (1);
-#
-# trim
-#------------------------------------------------------------------------------
 
 
 #------------------------------------------------------------------------------
@@ -131,26 +222,6 @@ ok (1);
 
 
 #------------------------------------------------------------------------------
-# htmlesc
-#
-
-# basic operation of htmlesc
-$val = '<>"&';
-$val = htmlesc($val);
-comp $val, '&lt;&gt;&quot;&amp;';
-
-# change undef to empty string
-undef $val;
-$val = htmlesc($val);
-comp $val, '';
-
-ok (1);
-#
-# htmlesc
-#------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------
 # jsquote
 #
 $val = qq|'yeah\n</script>'|;
@@ -180,28 +251,6 @@ ok (1);
 #------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------
-# hascontent
-#
-undef $val;
-hascontent($val) and err 'hascontent', 'returned true on undef';
-
-$val = '';
-hascontent($val) and err 'hascontent', 'returned true on empty string';
-
-$val = "   \t   \n\n  \r   \n\n\r     ";
-hascontent($val) and err 'hascontent', 'returned true on string that just has whitespace';
-
-$val = '0';
-hascontent($val) or err 'hascontent', 'returned false on zero';
-
-$val = ' x ';
-hascontent($val) or err 'hascontent', 'returned false defined string with an "x" in it';
-
-ok(1);
-#
-# hascontent
-#------------------------------------------------------------------------------
 
 
 #------------------------------------------------------------------------------

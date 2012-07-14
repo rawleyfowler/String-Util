@@ -1,0 +1,14 @@
+---
+abstract: 'String::Util -- String processing utilities'
+author:
+    - "Miko O'Sullivan <miko@idocs.com>"
+generated_by: home grown
+license: perl
+name: String::Util
+provides:
+    String::Util:
+        file: lib/String/Util.pm
+        version: 1.20
+requires:
+    perl: 5.003
+version: 1.20

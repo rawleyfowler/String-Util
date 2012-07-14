@@ -1,19 +1,17 @@
 package String::Util;
 use strict;
 use Carp;
-use Debug::ShowStuff ':all';
-# use Number::Misc ':all';
 use overload;
 
 
 # version
 use vars '$VERSION';
-$VERSION = '1.01';
+$VERSION = '1.20';
 
 
 =head1 NAME
 
-String::Util -- Handy string processing utilities
+String::Util -- String processing utilities
 
 =head1 SYNOPSIS
 
@@ -99,9 +97,9 @@ use vars qw[@EXPORT_OK %EXPORT_TAGS];
 # the following functions accept a value and return a modified version of
 # that value
 push @EXPORT_OK, qw[
-	crunch     htmlesc    trim        define      repeat
-    unquote    no_space   fullchomp   randcrypt
-    jsquote    cellfill
+	crunch     htmlesc    trim      define      repeat
+	unquote    no_space   nospace   fullchomp   randcrypt
+	jsquote    cellfill   crunchlines
 ];
 
 # the following functions return true or false based on their input
@@ -111,7 +109,7 @@ push @EXPORT_OK, qw[ hascontent nocontent equndef neundef ];
 push @EXPORT_OK, qw[ randword randpost ];
 
 # the following function returns the unicode values of a string
-push @EXPORT_OK, qw[ ords ];
+push @EXPORT_OK, qw[ ords deords ];
 
 %EXPORT_TAGS = ('all' => [@EXPORT_OK]);
 #
@@ -249,6 +247,10 @@ sub no_space {
 	
 	return $val;
 }
+
+# alias nospace to no_space
+sub nospace { return no_space(@_) }
+
 #
 # no_space
 #------------------------------------------------------------------------------
@@ -368,14 +370,24 @@ Recognizes single quotes and double quotes.  The value must begin
 and end with same type of quotes or nothing is done to the value.
 Undef input results in undef output.
 
+B<option:> braces
+
+If the braces option is true, surrounding braces such as [] and {} are also removed.
+
 =cut
 
 sub unquote {
-	my ($val) = @_;
+	my ($val, %opts) = @_;
 	
 	if (defined $val) {
+		my $found = $val =~ s|^\`(.*)\`$|$1|s or
 		$val =~ s|^\"(.*)\"$|$1|s or
 		$val =~ s|^\'(.*)\'$|$1|s;
+		
+		if ($opts{'braces'} && ! $found) {
+			$val =~ s|^\[(.*)\]$|$1|s or
+			$val =~ s|^\{(.*)\}$|$1|s;
+		}
 	}
 	
 	return $val;
@@ -480,11 +492,13 @@ our %PATHS = (
 	wc => '/usr/bin/wc',
 	shuf => '/usr/bin/shuf', 
 	words => '/usr/share/dict/words',
+	head => '/usr/bin/head',
+	tail => '/usr/bin/tail',
 );
 
 sub randword {
 	my ($count, %opts) = @_;
-	my ($rv, $char, @chars);
+	my ($rv, $char, @chars, $paths);
 	$rv = '';
 	
 	# check syntax
@@ -492,17 +506,53 @@ sub randword {
 	
 	# dictionary word
 	if ($count =~ m|^dict|si) {
-		my ($cmd, $word);
-		
-		# get random word
-		$cmd = qq|$PATHS{'shuf'} -n 1 "$PATHS{'words'}"|;
-		($word) = `$cmd`;
-		$word =~ s|\s.*||si;
-		$word =~ s|'.*||si;
-		$word = lc($word);
-		
-		# return
-		return $word;
+		# loop until acceptable word is found
+		DICTIONARY:
+		while (1) {
+			my ($cmd, $line_count, $line_num, $word);
+			
+			# use Encode module
+			require Encode;
+			require Number::Misc;
+			
+			# get line count
+			$cmd = qq|$PATHS{'wc'} -l "$PATHS{'words'}"|;
+			($line_count) = `$cmd`;
+			$line_count =~ s|\s.*||s;
+			
+			# get random line
+			$line_num = Number::Misc::rand_in_range(0, $line_count);
+			
+			# untaint line number
+			unless ($line_num =~ m|^([0-9]+)$|s) { die "invalid line number: $line_num" }
+			$line_num = $1;
+			
+			# get random word
+			$cmd = qq[$PATHS{'head'} -$line_num "$PATHS{'words'}" | $PATHS{'tail'} -1];
+			($word) = `$cmd`;
+			$word =~ s|\s.*||si;
+			$word =~ s|'.*||si;
+			$word = lc($word);
+			
+			# only allow words that are all letters
+			if ($opts{'letters_only'}) {
+				unless ($word =~ m|^[a-z]+$|s)
+					{ next DICTIONARY }
+			}
+			
+			# check for max length
+			if ($opts{'maxlength'}) {
+				if ( length($word) > $opts{'maxlength'} )
+					{ next DICTIONARY }
+			}
+			
+			# encode unless specifically opted not to do so
+			unless ( defined($opts{'encode'}) && (! $opts{'encode'}) )
+				{ $word = Encode::encode_utf8($word) }
+			
+			# return
+			return $word;
+		}
 	}
 	
 	# alpha only
@@ -785,12 +835,25 @@ returns this string:
 =cut
 
 sub ords {
-	my ($str) = @_;
-	my @rv = split '', $str;
+	my ($str, %opts) = @_;
+	my (@rv, $show_chars);
+	
+	# get $show_chars option
+	$show_chars =$opts{'show_chars'};
+	
+	# split into individual letters
+	@rv = split '', $str;
 	
 	# change elements to their unicode numbers
 	foreach my $char (@rv) {
-		$char = '{' . ord($char) . '}';
+		my $rv = '{';
+		
+		if ($show_chars)
+			{ $rv .= $char . ':' }
+		
+		$rv .= ord($char) . '}';
+		
+		$char = $rv;
 	}
 	
 	# return words separated by spaces
@@ -798,6 +861,74 @@ sub ords {
 }
 #
 # ords
+#------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# deords
+#
+
+=head2 deords($string)
+
+Takes the output from ords() and returns the string that original created that
+output.
+
+For example, this command:
+
+ deords('{72}{101}{110}{100}{114}{105}{120}')
+
+returns this string:
+ Hendrix
+
+=cut
+
+sub deords {
+	my ($str) = @_;
+	my (@tokens, $rv);
+	$rv = '';
+	
+	# get tokens
+	@tokens = split(m|[\{\}]|s, $str);
+	@tokens = grep {length($_)} @tokens;
+	
+	# build return string
+	foreach my $token (@tokens) {
+		$rv .= chr($token);
+	}
+	
+	# return
+	return$rv;
+}
+#
+# deords
+#------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------
+# crunchlines
+#
+
+=head2 crunchlines($str)
+
+Compacts contiguous newlines into single newlines.  Whitespace between newlines
+is ignored, so that ntwo newlines separated by whitespace is compacted down to
+a single newline.
+
+=cut
+
+sub crunchlines {
+	my ($str) = @_;
+	
+	while($str =~ s|\n[ \t]*\n|\n|gs)
+		{}
+	
+	$str =~ s|^\n||s;
+	$str =~ s|\n$||s;
+	
+	return $str;
+}
+#
+# crunchlines
 #------------------------------------------------------------------------------
 
 
@@ -832,7 +963,7 @@ Initial release
 
 This is a non-backwards compatible version.
 
-urldecode, urlencode were removed entirely.  All of the subs that used used to
+urldecode, urlencode were removed entirely.  All of the subs that used to
 modify values in place were changed so that they do not do so anymore, except
 for fullchomp.
 
@@ -843,6 +974,9 @@ for why these changes were made.
 
 Decided it was time to upload five years worth of changes.
 
+=item Version 1.20    July, 2012
+
+Properly listing prerequisites.
 
 =back
 

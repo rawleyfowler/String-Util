@@ -1,5 +1,10 @@
-Util.pm
-Makefile.PL
 MANIFEST
+Changes
+LICENSE
+Makefile.PL
+Build.PL
+META.yml
 README
-test.pl
+lib/String/Util.pod
+lib/String/Util.pm
+t/test.t
