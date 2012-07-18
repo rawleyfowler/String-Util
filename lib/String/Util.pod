@@ -209,7 +209,7 @@ Undefs are returned as undefs.
 Crypts the given string, seeding the encryption with a random
 two character seed.
 
-=head2 randcrypt(string)
+=head2 randpost(string)
 
 Returns a string that sorta looks like one or more paragraphs.
 
@@ -308,6 +308,10 @@ Decided it was time to upload five years worth of changes.
 =item Version 1.20    July, 2012
 
 Properly listing prerequisites.
+
+=item Version 1.21    July 18, 2012
+
+Fixed error in POD.  Tightened up code for repet.
 
 =back
 

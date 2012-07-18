@@ -217,7 +217,7 @@ FUNCTIONS
     Crypts the given string, seeding the encryption with a random two
     character seed.
 
- randcrypt(string)
+ randpost(string)
 
     Returns a string that sorta looks like one or more paragraphs.
 
@@ -315,4 +315,8 @@ VERSION
     Version 1.20 July, 2012
 
       Properly listing prerequisites.
+
+    Version 1.21 July 18, 2012
+
+      Fixed error in POD. Tightened up code for repet.
 

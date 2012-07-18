@@ -6,7 +6,7 @@ use overload;
 
 # version
 use vars '$VERSION';
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 
 =head1 NAME
@@ -443,12 +443,7 @@ Returns the given string repeated the given number of times.
 
 sub repeat {
 	my ($val, $count) = @_;
-	my $rv = '';
-	
-	foreach (1..$count)
-		{ $rv .= $val }
-	
-	return $rv;
+	return ($val x int($count)); 
 }
 #
 # repeat
@@ -693,7 +688,7 @@ sub randcrypt {
 # randpost
 #
 
-=head2 randcrypt(string)
+=head2 randpost(string)
 
 Returns a string that sorta looks like one or more paragraphs.
 
@@ -977,6 +972,11 @@ Decided it was time to upload five years worth of changes.
 =item Version 1.20    July, 2012
 
 Properly listing prerequisites.
+
+=item Version 1.21    July 18, 2012
+
+Fixed error in POD.  Tightened up code for repet.
+
 
 =back
 
