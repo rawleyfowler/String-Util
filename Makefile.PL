@@ -10,7 +10,9 @@ $make_args = {
                'EXE_FILES' => [],
                'VERSION_FROM' => 'lib/String/Util.pm',
                'LICENSE' => 'perl',
-               'PREREQ_PM' => {}
+               'PREREQ_PM' => {
+                                'Number::Misc' => 0
+                              }
              };
 
 

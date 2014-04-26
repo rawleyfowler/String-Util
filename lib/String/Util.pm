@@ -5,8 +5,7 @@ use overload;
 
 
 # version
-use vars '$VERSION';
-$VERSION = '1.21';
+our $VERSION = '1.22';
 
 
 =head1 NAME
@@ -73,13 +72,10 @@ strings.
 
 String::Util can be installed with the usual routine:
 
-	perl Makefile.PL
-	make
-	make test
-	make install
-
-You can also just copy Util.pm into the String/ directory of one of your
-library trees.
+ perl Makefile.PL
+ make
+ make test
+ make install
 
 =head1 FUNCTIONS
 
@@ -97,9 +93,9 @@ use vars qw[@EXPORT_OK %EXPORT_TAGS];
 # the following functions accept a value and return a modified version of
 # that value
 push @EXPORT_OK, qw[
-	crunch     htmlesc    trim      define      repeat
-	unquote    no_space   nospace   fullchomp   randcrypt
-	jsquote    cellfill   crunchlines
+	crunch     htmlesc    trim      ltrim      rtrim
+	define     repeat     unquote   no_space   nospace
+	fullchomp  randcrypt  jsquote   cellfill   crunchlines
 ];
 
 # the following functions return true or false based on their input
@@ -150,10 +146,8 @@ sub crunch {
 
 =head2 hascontent(scalar), nocontent(scalar)
 
-Returns true if the given argument contains something besides whitespace.
-
-This function tests if the given value is defined and, if it is, if that
-defined value contains something besides whitespace.
+hascontent() returns true if the given argument is defined and contains
+something besides whitespace.
 
 An undefined value returns false.  An empty string returns false.  A value
 containing nothing but whitespace (spaces, tabs, carriage returns,
@@ -228,6 +222,36 @@ sub trim {
 #------------------------------------------------------------------------------
 
 
+#------------------------------------------------------------------------------
+# ltrim, rtrim
+#
+
+=head2 ltrim, rtrim
+
+ltrim trims leading whitespace.  rtrim trims trailing whitespace.  They are
+exactly equivalent to 
+
+ trim($var, left=>0);
+
+and
+
+ trim($var, right=>0);
+
+=cut
+
+sub ltrim {
+	return trim($_[0], right=>0);
+}
+
+sub rtrim {
+	return trim($_[0], left=>0);
+}
+
+#
+# ltrim, rtrim
+#------------------------------------------------------------------------------
+
+
 
 #------------------------------------------------------------------------------
 # no_space
@@ -282,8 +306,9 @@ sub htmlesc{
 		$val =~ s|\<|&lt;|g;
 		$val =~ s|\>|&gt;|g;
 	}
-	else
-		{$val = ''}
+	else {
+		$val = '';
+	}
 	
 	return $val;
 }
@@ -339,17 +364,16 @@ sub jsquote {
 	# Escape single quotes.
 	$str =~ s|'|\\'|gs;
 	
-	# Break up anything that looks like a closing
-	# HTML tag.  This modification is unnecessary but harmless
-	# if the output is used in a JavaScript document.  In an HTML
-	# web page it is necessary.
+	# Break up anything that looks like a closing HTML tag.  This modification
+	# is necessary in an HTML web page.  It is unnecessary but harmless if the
+	# output is used in a JavaScript document.
 	$str =~ s|</|<' + '/|gs;
 	
 	# break up newlines
 	$str =~ s|\n|\\n|gs;
 	
 	# surround in quotes
-	$str = "'$str'";
+	$str = qq|'$str'|;
 	
 	# return
 	return $str;
@@ -688,7 +712,7 @@ sub randcrypt {
 # randpost
 #
 
-=head2 randpost(string)
+=head2 randpost(%opts)
 
 Returns a string that sorta looks like one or more paragraphs.
 
@@ -706,7 +730,7 @@ words.
 B<option:> par
 
 Sets the string to put at the end or the start and end of a paragraph.
-Defaults to twonelines for the end of a pargraph.
+Defaults to two newlines for the end of a pargraph.
 
 If this option is a single scalar, that string is added to the end of each
 paragraph.
@@ -833,14 +857,22 @@ sub ords {
 	my ($str, %opts) = @_;
 	my (@rv, $show_chars);
 	
-	# get $show_chars option
-	$show_chars =$opts{'show_chars'};
+	# default options
+	%opts = (convert_spaces=>1, %opts);
 	
-	# split into individual letters
+	# get $show_chars option
+	$show_chars = $opts{'show_chars'};
+	
+	# split into individual characters
 	@rv = split '', $str;
 	
 	# change elements to their unicode numbers
+	CHAR_LOOP:
 	foreach my $char (@rv) {
+		# don't convert space if called so
+		if ( (! $opts{'convert_spaces'}) && ($char =~ m|^\s$|s) )
+			{ next CHAR_LOOP }
+		
 		my $rv = '{';
 		
 		if ($show_chars)
@@ -936,7 +968,7 @@ __END__
 
 =head1 TERMS AND CONDITIONS
 
-Copyright (c) 2010 by Miko O'Sullivan.  All rights reserved.  This program is 
+Copyright (c) 2012 by Miko O'Sullivan.  All rights reserved.  This program is 
 free software; you can redistribute it and/or modify it under the same terms 
 as Perl itself. This software comes with B<NO WARRANTY> of any kind.
 
@@ -944,7 +976,6 @@ as Perl itself. This software comes with B<NO WARRANTY> of any kind.
 
 Miko O'Sullivan
 F<miko@idocs.com>
-
 
 =head1 VERSION
 
@@ -977,6 +1008,15 @@ Properly listing prerequisites.
 
 Fixed error in POD.  Tightened up code for repet.
 
+=item Version 1.22
+
+Fix in documentation for randpost().
+
+Clarified documentation for hascontent() and nocontent().
+
+=item Version 1.22
+
+Fixed error in META.yml.
 
 =back
 

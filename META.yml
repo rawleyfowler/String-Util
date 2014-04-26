@@ -4,11 +4,12 @@ author:
     - "Miko O'Sullivan <miko@idocs.com>"
 generated_by: home grown
 license: perl
-name: String::Util
+name: String-Util
 provides:
     String::Util:
         file: lib/String/Util.pm
-        version: 1.21
+        version: 1.22
 requires:
+    Number::Misc: 0
     perl: 5.003
-version: 1.21
+version: 1.22

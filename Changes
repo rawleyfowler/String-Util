@@ -1,6 +1,5 @@
-Revision history for Perl extension String::Util
-
-Version 0.10 December 1, 2005
+String::Util
+    Version 0.10 December 1, 2005
 
       Initial release
 
@@ -27,3 +26,13 @@ Version 0.10 December 1, 2005
     Version 1.21 July 18, 2012
 
       Fixed error in POD. Tightened up code for repet.
+
+    Version 1.22
+
+      Fix in documentation for randpost().
+
+      Clarified documentation for hascontent() and nocontent().
+
+    Version 1.22
+
+      Fixed error in META.yml.
