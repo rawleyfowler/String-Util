@@ -33,6 +33,6 @@ String::Util
 
       Clarified documentation for hascontent() and nocontent().
 
-    Version 1.22
+    Version 1.23
 
       Fixed error in META.yml.

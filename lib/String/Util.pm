@@ -5,7 +5,7 @@ use overload;
 
 
 # version
-our $VERSION = '1.22';
+our $VERSION = '1.23';
 
 
 =head1 NAME
@@ -1014,7 +1014,7 @@ Fix in documentation for randpost().
 
 Clarified documentation for hascontent() and nocontent().
 
-=item Version 1.22
+=item Version 1.23
 
 Fixed error in META.yml.
 

@@ -8,8 +8,8 @@ name: String-Util
 provides:
     String::Util:
         file: lib/String/Util.pm
-        version: 1.22
+        version: 1.23
 requires:
     Number::Misc: 0
     perl: 5.003
-version: 1.22
+version: 1.23
