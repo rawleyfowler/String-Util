@@ -1,9 +1,9 @@
 String::Util
-    Version 0.10 December 1, 2005
+    Version 0.10, December 1, 2005
 
       Initial release
 
-    Version 0.11 December 22, 2005
+    Version 0.11, December 22, 2005
 
       This is a non-backwards compatible version.
 
@@ -15,15 +15,15 @@ String::Util
       http://www.xray.mpe.mpg.de/mailing-lists/modules/2005-12/msg00112.htm
       l for why these changes were made.
 
-    Version 1.01 November 7, 2010
+    Version 1.01, November 7, 2010
 
       Decided it was time to upload five years worth of changes.
 
-    Version 1.20 July, 2012
+    Version 1.20, July, 2012
 
       Properly listing prerequisites.
 
-    Version 1.21 July 18, 2012
+    Version 1.21, July 18, 2012
 
       Fixed error in POD. Tightened up code for repet.
 
@@ -36,3 +36,12 @@ String::Util
     Version 1.23
 
       Fixed error in META.yml.
+
+    Version 1.24, December 31, 2014
+
+      Cleaned up POD formatting.
+
+      Changed file to using Unixish style newlines. I hadn't realized until
+      now that it was using Windowish newline. How embarrasing.
+
+      Added some features to ords().

@@ -5,8 +5,12 @@ use overload;
 
 
 # version
-our $VERSION = '1.23';
+our $VERSION = '1.24';
 
+
+#------------------------------------------------------------------------------
+# opening POD
+#
 
 =head1 NAME
 
@@ -15,51 +19,51 @@ String::Util -- String processing utilities
 =head1 SYNOPSIS
 
   use String::Util ':all';
-  
+
   # "crunch" whitespace and remove leading/trailing whitespace
   $val = crunch($val);
-  
+
   # does this value have "content", i.e. it's defined
   # and has something besides whitespace?
   if (hascontent $val) {...}
-  
+
   # format for display in a web page
   $val = htmlesc($val);
-  
+
   # format for display in a web page table cell
   $val = cellfill($val);
-  
+
   # remove leading/trailing whitespace
   $val = trim($val);
-  
+
   # ensure defined value
   $val = define($val);
-  
+
   # repeat string x number of times
   $val = repeat($val, $iterations);
-  
+
   # remove leading/trailing quotes
   $val = unquote($val);
-  
+
   # remove all whitespace
   $val = no_space($val);
-  
+
   # remove trailing \r and \n, regardless of what
   # the OS considers an end-of-line
   $val = fullchomp($val);
-  
+
   # or call in void context:
   fullchomp $val;
-  
+
   # encrypt string using random seed
   $val = randcrypt($val);
-  
+
   # are these two values equal, where two undefs count as "equal"?
   if (equndef $a, $b) {...}
-  
+
   # are these two values different, where two undefs count as "equal"?
   if (neundef $a, $b) {...}
-  
+
   # get a random string of some specified length
   $val = randword(10);
 
@@ -80,6 +84,10 @@ String::Util can be installed with the usual routine:
 =head1 FUNCTIONS
 
 =cut
+
+#
+# opening POD
+#------------------------------------------------------------------------------
 
 
 
@@ -290,10 +298,10 @@ sub nospace { return no_space(@_) }
 Formats a string for literal output in HTML.  An undefined value is
 returned as an empty string.
 
-htmlesc is very similar to CGI.pm's escapeHTML.  If your script already
-loads CGI.pm, you may well not need htmlesc.  However, there are a few
-differences.  htmlesc changes an undefined value to an empty string, whereas
-escapeHTML returns undefs as undefs.
+htmlesc is very similar to CGI.pm's escapeHTML.  If your script already loads
+CGI.pm, you may well not need htmlesc.  However, there are a few differences.
+htmlesc> changes an undefined value to an empty string, whereas escapeHTML
+returns undefs as undefs.
 
 =cut
 
@@ -323,9 +331,9 @@ sub htmlesc{
 
 =head2 cellfill(string)
 
-Formats a string for literal output in an HTML table cell.  Works just
-like htmlesc except that strings with no content (i.e. are undef or are
-just whitespace) are returns as &nbsp;.
+Formats a string for literal output in an HTML table cell.  Works just like
+htmlesc except that strings with no content (i.e. are undef or are just
+whitespace) are returns as C<&nbsp;>.
 
 =cut
 
@@ -396,7 +404,8 @@ Undef input results in undef output.
 
 B<option:> braces
 
-If the braces option is true, surrounding braces such as [] and {} are also removed.
+If the braces option is true, surrounding braces such as [] and {} are also
+removed.
 
 =cut
 
@@ -427,8 +436,8 @@ sub unquote {
 
 =head2 define(scalar)
 
-Takes a single value as input. If the value is defined, it is
-returned unchanged.  If it is not defined, an empty string is returned.
+Takes a single value as input. If the value is defined, it is returned
+unchanged.  If it is not defined, an empty string is returned.
 
 This subroutine is useful for printing when an undef should simply be
 represented as an empty string.  Granted, Perl already treats undefs as
@@ -492,7 +501,8 @@ dictionary file and the shuf executable.  Modify that hash to change the paths.
 
 B<option:> alpha
 
-If the alpha option is true, only alphabetic characters are returned, no numerals.
+If the alpha option is true, only alphabetic characters are returned, no
+numerals.
 
 B<option:> numerals
 
@@ -851,6 +861,48 @@ returns this string:
 
  {72}{101}{110}{100}{114}{105}{120}
 
+B<options>
+
+=over 4
+
+=item * convert_spaces=>[true|false]
+
+If convert_spaces is true (which is the default) then spaces are converted to
+their matching ord values. So, for example, this code:
+
+ ords('a b', convert_spaces=>1)
+
+returns this:
+
+{97}{32}{98}
+
+This code returns the same thing:
+
+ ords('a b')
+
+If convert_spaces is false, then spaces are just returned as spaces. So this
+code:
+
+ ords('a b', convert_spaces=>0);
+
+returns
+
+ {97} {98}
+
+=item * alpha_nums
+
+If the alpha_nums option is false, then characters 0-9, a-z, and A-Z are not
+converted. For example, this code:
+
+ ords('a=b', alpha_nums=>0)
+
+returns this:
+
+ a{61}b
+
+
+=back
+
 =cut
 
 sub ords {
@@ -858,7 +910,7 @@ sub ords {
 	my (@rv, $show_chars);
 	
 	# default options
-	%opts = (convert_spaces=>1, %opts);
+	%opts = (convert_spaces=>1, alpha_nums=>1, %opts);
 	
 	# get $show_chars option
 	$show_chars = $opts{'show_chars'};
@@ -872,6 +924,13 @@ sub ords {
 		# don't convert space if called so
 		if ( (! $opts{'convert_spaces'}) && ($char =~ m|^\s$|s) )
 			{ next CHAR_LOOP }
+		
+		# don't convert alphanums
+		if (! $opts{'alpha_nums'}) {
+			if ( $char =~ m|^[a-z0-9]$|si) {
+				next CHAR_LOOP;
+			}
+		}
 		
 		my $rv = '{';
 		
@@ -924,7 +983,7 @@ sub deords {
 	}
 	
 	# return
-	return$rv;
+	return $rv;
 }
 #
 # deords
@@ -938,8 +997,18 @@ sub deords {
 =head2 crunchlines($str)
 
 Compacts contiguous newlines into single newlines.  Whitespace between newlines
-is ignored, so that ntwo newlines separated by whitespace is compacted down to
+is ignored, so that two newlines separated by whitespace is compacted down to
 a single newline.
+
+For example, this code:
+
+ crunchlines("x\n\n\nx")
+
+outputs two x's with a single empty line between them:
+
+ x
+
+ x
 
 =cut
 
@@ -981,11 +1050,11 @@ F<miko@idocs.com>
 
 =over
 
-=item Version 0.10    December 1, 2005
+=item Version 0.10, December 1, 2005
 
 Initial release
 
-=item Version 0.11    December 22, 2005
+=item Version 0.11, December 22, 2005
 
 This is a non-backwards compatible version.
 
@@ -996,15 +1065,15 @@ for fullchomp.
 See http://www.xray.mpe.mpg.de/mailing-lists/modules/2005-12/msg00112.html
 for why these changes were made.
 
-=item Version 1.01    November 7, 2010
+=item Version 1.01, November 7, 2010
 
 Decided it was time to upload five years worth of changes.
 
-=item Version 1.20    July, 2012
+=item Version 1.20, July, 2012
 
 Properly listing prerequisites.
 
-=item Version 1.21    July 18, 2012
+=item Version 1.21, July 18, 2012
 
 Fixed error in POD.  Tightened up code for repet.
 
@@ -1017,6 +1086,15 @@ Clarified documentation for hascontent() and nocontent().
 =item Version 1.23
 
 Fixed error in META.yml.
+
+=item Version 1.24, December 31, 2014
+
+Cleaned up POD formatting.
+
+Changed file to using Unixish style newlines. I hadn't realized until now that
+it was using Windowish newline. How embarrasing.
+
+Added some features to ords().
 
 =back
 

@@ -8,6 +8,7 @@ $params = {
             'dist_author' => 'Miko O\'Sullivan <miko@idocs.com>',
             'module_name' => 'String::Util',
             'requires' => {
+                            'Test' => 0,
                             'Number::Misc' => 0
                           },
             'dist_version_from' => 'lib/String/Util.pm',

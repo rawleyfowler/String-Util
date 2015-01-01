@@ -5,51 +5,51 @@ NAME
 SYNOPSIS
 
       use String::Util ':all';
-      
+    
       # "crunch" whitespace and remove leading/trailing whitespace
       $val = crunch($val);
-      
+    
       # does this value have "content", i.e. it's defined
       # and has something besides whitespace?
       if (hascontent $val) {...}
-      
+    
       # format for display in a web page
       $val = htmlesc($val);
-      
+    
       # format for display in a web page table cell
       $val = cellfill($val);
-      
+    
       # remove leading/trailing whitespace
       $val = trim($val);
-      
+    
       # ensure defined value
       $val = define($val);
-      
+    
       # repeat string x number of times
       $val = repeat($val, $iterations);
-      
+    
       # remove leading/trailing quotes
       $val = unquote($val);
-      
+    
       # remove all whitespace
       $val = no_space($val);
-      
+    
       # remove trailing \r and \n, regardless of what
       # the OS considers an end-of-line
       $val = fullchomp($val);
-      
+    
       # or call in void context:
       fullchomp $val;
-      
+    
       # encrypt string using random seed
       $val = randcrypt($val);
-      
+    
       # are these two values equal, where two undefs count as "equal"?
       if (equndef $a, $b) {...}
-      
+    
       # are these two values different, where two undefs count as "equal"?
       if (neundef $a, $b) {...}
-      
+    
       # get a random string of some specified length
       $val = randword(10);
 
@@ -130,7 +130,7 @@ FUNCTIONS
 
     htmlesc is very similar to CGI.pm's escapeHTML. If your script already
     loads CGI.pm, you may well not need htmlesc. However, there are a few
-    differences. htmlesc changes an undefined value to an empty string,
+    differences. htmlesc> changes an undefined value to an empty string,
     whereas escapeHTML returns undefs as undefs.
 
  cellfill(string)
@@ -267,6 +267,43 @@ FUNCTIONS
 
      {72}{101}{110}{100}{114}{105}{120}
 
+    options
+
+      * convert_spaces=>[true|false]
+
+      If convert_spaces is true (which is the default) then spaces are
+      converted to their matching ord values. So, for example, this code:
+
+       ords('a b', convert_spaces=>1)
+
+      returns this:
+
+      {97}{32}{98}
+
+      This code returns the same thing:
+
+       ords('a b')
+
+      If convert_spaces is false, then spaces are just returned as spaces.
+      So this code:
+
+       ords('a b', convert_spaces=>0);
+
+      returns
+
+       {97} {98}
+
+      * alpha_nums
+
+      If the alpha_nums option is false, then characters 0-9, a-z, and A-Z
+      are not converted. For example, this code:
+
+       ords('a=b', alpha_nums=>0)
+
+      returns this:
+
+       a{61}b
+
  deords($string)
 
     Takes the output from ords() and returns the string that original
@@ -281,8 +318,18 @@ FUNCTIONS
  crunchlines($str)
 
     Compacts contiguous newlines into single newlines. Whitespace between
-    newlines is ignored, so that ntwo newlines separated by whitespace is
+    newlines is ignored, so that two newlines separated by whitespace is
     compacted down to a single newline.
+
+    For example, this code:
+
+     crunchlines("x\n\n\nx")
+
+    outputs two x's with a single empty line between them:
+
+     x
+    
+     x
 
 TERMS AND CONDITIONS
 
@@ -297,11 +344,11 @@ AUTHORS
 
 VERSION
 
-    Version 0.10 December 1, 2005
+    Version 0.10, December 1, 2005
 
       Initial release
 
-    Version 0.11 December 22, 2005
+    Version 0.11, December 22, 2005
 
       This is a non-backwards compatible version.
 
@@ -313,15 +360,15 @@ VERSION
       http://www.xray.mpe.mpg.de/mailing-lists/modules/2005-12/msg00112.htm
       l for why these changes were made.
 
-    Version 1.01 November 7, 2010
+    Version 1.01, November 7, 2010
 
       Decided it was time to upload five years worth of changes.
 
-    Version 1.20 July, 2012
+    Version 1.20, July, 2012
 
       Properly listing prerequisites.
 
-    Version 1.21 July 18, 2012
+    Version 1.21, July 18, 2012
 
       Fixed error in POD. Tightened up code for repet.
 
@@ -334,4 +381,13 @@ VERSION
     Version 1.23
 
       Fixed error in META.yml.
+
+    Version 1.24, December 31, 2014
+
+      Cleaned up POD formatting.
+
+      Changed file to using Unixish style newlines. I hadn't realized until
+      now that it was using Windowish newline. How embarrasing.
+
+      Added some features to ords().
 
