@@ -1,8 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use String::Util ':all';
-use Test;
-BEGIN { plan tests => 13 };
+use Test::More tests => 25;
 
 # general purpose variable
 my ($val, $org, $new, $got, $should);
@@ -88,6 +87,34 @@ ok (1);
 # no_space
 #------------------------------------------------------------------------------
 
+#------------------------------------------------------------------------------
+# startswith
+$val = "Quick brown fox";
+
+is(startswith("Q", "Quick brown fox")    , 1, "Startswidth 1");
+is(startswith("Quick", "Quick brown fox"), 1, "Startswidth 2");
+is(startswith("zzz", "Quick brown fox")  , '', "Startswidth 3");
+is(startswith("c", "Quick brown fox")    , '', "Startswidth 4");
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# endswith
+$val = "Quick brown fox";
+
+is(endswith("x", $val)   , 1, "Endswidth 1");
+is(endswith("fox", $val) , 1, "Endswidth 2");
+is(endswith(" fox", $val), 1, "Endswidth 3");
+is(endswith("qqq", $val) , '', "Endswidth 4");
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# contains
+$val = "Quick brown fox";
+is(contains("brown", $val), 1, "Contains 1");
+is(contains("uick", $val) , 1, "Contains 2");
+is(contains("n f", $val)  , 1, "Contains 3");
+is(contains("qqq", $val)  , '', "Contains 4");
+#------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # htmlesc
@@ -294,7 +321,7 @@ ok(1);
 #
 sub err {
 	my ($function_name, $err) = @_;
-	
+
 	print STDERR $function_name, ': ', $err, "\n";
 	ok(0);
 	exit;
@@ -309,12 +336,12 @@ sub err {
 #
 sub comp {
 	my ($is, $shouldbe) = @_;
-	
+
 	if(! equndef($is, $shouldbe)) {
-		print STDERR 
+		print STDERR
 			"\n",
 			"\tis:         ", (defined($is) ?       $is       : '[undef]'), "\n",
-			"\tshould be : ", (defined($shouldbe) ? $shouldbe : '[undef]'), "$shouldbe\n\n";	
+			"\tshould be : ", (defined($shouldbe) ? $shouldbe : '[undef]'), "$shouldbe\n\n";
 		ok(0);
 		exit;
 	}

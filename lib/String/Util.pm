@@ -104,6 +104,7 @@ push @EXPORT_OK, qw[
 	crunch     htmlesc    trim      ltrim      rtrim
 	define     repeat     unquote   no_space   nospace
 	fullchomp  randcrypt  jsquote   cellfill   crunchlines
+	startswith endswith   contains
 ];
 
 # the following functions return true or false based on their input
@@ -989,6 +990,35 @@ sub deords {
 # deords
 #------------------------------------------------------------------------------
 
+sub contains {
+    my $substr = shift() || "";
+    my $str    = shift() || $_ || "";
+
+    my $ret = index($str, $substr, 0) != -1;
+
+    return $ret;
+}
+
+sub startswith {
+    my $substr = shift() || "";
+    my $str    = shift() || $_ || "";
+
+    my $ret = index($str, $substr, 0) == 0;
+
+    return $ret;
+}
+
+sub endswith {
+    my $substr = shift() || "";
+    my $str    = shift() || $_ || "";
+
+    my $len   = length($substr);
+    my $start = length($str) - $len;
+
+    my $ret = index($str, $substr, $start) != -1;
+
+    return $ret;
+}
 
 #------------------------------------------------------------------------------
 # crunchlines
