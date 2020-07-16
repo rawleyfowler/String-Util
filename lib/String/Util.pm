@@ -23,8 +23,7 @@ String::Util -- String processing utilities
   # "crunch" whitespace and remove leading/trailing whitespace
   $val = crunch($val);
 
-  # does this value have "content", i.e. it's defined
-  # and has something besides whitespace?
+  # does this value have "content", does it contain something besides whitespace?
   if (hascontent $val) {...}
 
   # format for display in a web page
@@ -103,11 +102,13 @@ push @EXPORT_OK, qw[
 	collapse     crunch     htmlesc    trim      ltrim
 	rtrim        define     repeat     unquote   no_space
 	nospace      fullchomp  randcrypt  jsquote   cellfill
-	crunchlines  startswith endswith   contains
+	crunchlines
 ];
 
 # the following functions return true or false based on their input
-push @EXPORT_OK, qw[ hascontent nocontent eqq equndef neqq neundef ];
+push @EXPORT_OK, qw[
+	hascontent  nocontent eqq equndef neqq neundef
+	startswith  endswith  contains];
 
 # the following function returns a random string of some type
 push @EXPORT_OK, qw[ randword randpost ];
@@ -135,6 +136,8 @@ C<crunch()> is the old name for C<collapse()>. I decided that "crunch" never
 sounded right. Spaces don't go "crunch", they go "poof" like a collapsing
 ballon. However, C<crunch()> will continue to work as an alias for
 C<collapse()>.
+
+  $var = collapse("  Hello     world!    "); # "Hello world!"
 
 =cut
 
@@ -174,6 +177,13 @@ zero) returns true.
 
 C<nocontent()> returns the negation of C<hascontent()>.
 
+  $var = hascontent("");  # False
+  $var = hascontent(" "); # False
+  $var = hascontent("a"); # True
+
+  $var = nocontent("");   # True
+  $var = nocontent("a");  # False
+
 =cut
 
 sub hascontent {
@@ -203,20 +213,7 @@ sub nocontent {
 Returns the string with all leading and trailing whitespace removed.
 Trim on undef returns "".
 
-So, for example, the following code changes " my string  " to "my string":
-
- $var = " my string  ";
- $var = trim($var);
-
-trim accepts two optional arguments, 'left' and 'right', both of which
-are true by default.  So, to avoid trimming the left side of the string,
-set the 'left' argument to false:
-
- $var = trim($var, left=>0);
-
-To avoid trimming the right side, set 'right' to false:
-
- $var = trim($var, right=>0);
+  $var = trim(" my string  "); # "my string"
 
 =cut
 
@@ -250,14 +247,7 @@ sub trim {
 
 =head2 ltrim, rtrim
 
-ltrim trims leading whitespace.  rtrim trims trailing whitespace.  They are
-exactly equivalent to
-
- trim($var, left=>0);
-
-and
-
- trim($var, right=>0);
+ltrim trims leading whitespace.  rtrim trims trailing whitespace.
 
 =cut
 
@@ -281,7 +271,10 @@ sub rtrim {
 
 =head2 no_space($string)
 
-Removes all whitespace characters from the given string.
+Removes B<all> whitespace characters from the given string. This includes spaces
+between words
+
+  $var = no_space("  Hello World!   "); # "HelloWorld!"
 
 =cut
 
@@ -318,7 +311,7 @@ escapeHTML() returns undefs as undefs.
 
 =cut
 
-sub htmlesc{
+sub htmlesc {
 	my ($val) = @_;
 
 	if (defined $val) {
@@ -529,9 +522,9 @@ Returns a random string of characters. String will not contain any vowels (to
 avoid distracting dirty words). First argument is the length of the return
 string. So this code:
 
- foreach my $idx (1..3) {
-   print randword(4), "\n";
- }
+  foreach my $idx (1..3) {
+      print randword(4), "\n";
+  }
 
 would output something like this:
 
@@ -546,9 +539,9 @@ pull out a word.  The hash %String::Util::PATHS sets the paths to the
 dictionary file and the shuf executable.  Modify that hash to change the paths.
 So this code:
 
- foreach my $idx (1..3) {
-   print randword('dictionary'), "\n";
- }
+  foreach my $idx (1..3) {
+      print randword('dictionary'), "\n";
+  }
 
 would output something like this:
 
@@ -561,9 +554,9 @@ B<option:> alpha
 If the alpha option is true, only alphabetic characters are returned, no
 numerals. For example, this code:
 
- foreach my $idx (1..3) {
-   print randword(4, alpha=>1), "\n";
- }
+  foreach my $idx (1..3) {
+      print randword(4, alpha=>1), "\n";
+  }
 
 would output something like this:
 
@@ -576,9 +569,9 @@ B<option:> numerals
 If the numerals option is true, only numerals are returned, no alphabetic
 characters. So this code:
 
- foreach my $idx (1..3) {
-   print randword(4, numerals=>1), "\n";
- }
+  foreach my $idx (1..3) {
+      print randword(4, numerals=>1), "\n";
+  }
 
 would output something like this:
 
@@ -591,8 +584,8 @@ B<option:> strip_vowels
 This option is true by default.  If true, vowels are not included in the
 returned random string. So this code:
 
- foreach my $idx (1..3) {
-   print randword(4, strip_vowels=>1), "\n";
+  foreach my $idx (1..3) {
+      print randword(4, strip_vowels=>1), "\n";
   }
 
 would output something like this:
@@ -720,9 +713,9 @@ Returns true if the two given values are equal.  Also returns true if both
 are undef.  If only one is undef, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
- eqq('x', 'x'), "\n";      # 1
- eqq('x', undef), "\n";    # 0
- eqq(undef, undef), "\n";  # 1
+ eqq('x', 'x'), "\n";      # True
+ eqq('x', undef), "\n";    # False
+ eqq(undef, undef), "\n";  # True
 
 =cut
 
@@ -758,9 +751,9 @@ sub eqq {
 The opposite of neqq, returns true if the two values are *not* the same.
 Here are some examples and what they return.
 
- print neqq('x', 'x'), "\n";      # 0
- print neqq('x', undef), "\n";    # 1
- print neqq(undef, undef), "\n";  # 0
+ print neqq('x', 'x'), "\n";      # False
+ print neqq('x', undef), "\n";    # True
+ print neqq(undef, undef), "\n";  # False
 
 =cut
 
@@ -1198,15 +1191,7 @@ Compacts contiguous newlines into single newlines.  Whitespace between newlines
 is ignored, so that two newlines separated by whitespace is compacted down to a
 single newline.
 
-For example, this code:
-
- crunchlines("x\n\n\nx")
-
-outputs two x's with a single empty line between them:
-
- x
-
- x
+  $var = crunchlines("x\n\n\nx"); # "x\nx";
 
 =cut
 
