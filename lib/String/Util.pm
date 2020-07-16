@@ -1107,27 +1107,78 @@ sub deords {
 # deords
 #------------------------------------------------------------------------------
 
+=head2 contains($string, $substring)
+
+Checks if the string contains substring
+
+Examples:
+
+  contains("Hello world", "Hello");   # true
+  contains("Hello world", "llo wor"); # true
+  contains("Hello world", "QQQ");     # false
+
+=cut
+
 sub contains {
-	my $substr = shift() || "";
-	my $str    = shift() || $_ || "";
+	my $str    = shift() || "";
+	my $substr = shift();
+
+	if (!$substr) {
+		$substr = $str;
+		$str    = $_;
+	}
 
 	my $ret = index($str, $substr, 0) != -1;
 
 	return $ret;
 }
 
+=head2 startswith($string, $substring)
+
+Checks if the string starts with the characters in substring
+
+Examples:
+
+  startwidth("Hello world", "Hello"); # true
+  startwidth("Hello world", "H");     # true
+  startwidth("Hello world", "Q");     # false
+
+=cut
+
 sub startswith {
-	my $substr = shift() || "";
-	my $str    = shift() || $_ || "";
+	my $str    = shift() || "";
+	my $substr = shift();
+
+	if (!$substr) {
+		$substr = $str;
+		$str    = $_;
+	}
 
 	my $ret = index($str, $substr, 0) == 0;
 
 	return $ret;
 }
 
+=head2 endswith($string, $substring)
+
+Checks if the string ends with the characters in substring
+
+Examples:
+
+  endswidth("Hello world", "world");   # true
+  endswidth("Hello world", "d");       # true
+  endswidth("Hello world", "QQQ");     # false
+
+=cut
+
 sub endswith {
-	my $substr = shift() || "";
-	my $str    = shift() || $_ || "";
+	my $str    = shift() || "";
+	my $substr = shift();
+
+	if (!$substr) {
+		$substr = $str;
+		$str    = $_;
+	}
 
 	my $len   = length($substr);
 	my $start = length($str) - $len;
