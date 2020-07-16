@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use String::Util ':all';
-use Test::More tests => 44;
+use Test::More tests => 48;
 
 # general purpose variable
 my $val;
@@ -69,29 +69,29 @@ ok(no_space("Perl") eq 'Perl', 'no_space no whitespace');
 # startswith
 $val = "Quick brown fox";
 
-#ok(startswith("Q", "Quick brown fox")     , "Startswidth 1");
-#ok(startswith("Quick", "Quick brown fox") , "Startswidth 2");
-#ok(!startswith("zzz", "Quick brown fox")  , "Startswidth 3");
-#ok(!startswith("c", "Quick brown fox")    , "Startswidth 4");
+ok(startswith("Quick brown fox", 'Q')     , "Startswidth 1");
+ok(startswith("Quick brown fox", 'Quick') , "Startswidth 2");
+ok(!startswith("Quick brown fox", 'z')    , "Startswidth 3");
+ok(!startswith("Quick brown fox", 'qqq')  , "Startswidth 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # endswith
 $val = "Quick brown fox";
 
-ok(endswith("x", $val)    , "Endswidth 1");
-ok(endswith("fox", $val)  , "Endswidth 2");
-ok(endswith(" fox", $val) , "Endswidth 3");
-ok(!endswith("qqq", $val)  , "Endswidth 4");
+ok(endswith($val, 'x')    , "Endswidth 1");
+ok(endswith($val, 'fox')  , "Endswidth 2");
+ok(endswith($val, ' fox') , "Endswidth 3");
+ok(!endswith($val, 'qqq') , "Endswidth 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # contains
 $val = "Quick brown fox";
-ok(contains("brown", $val) , "Contains 1");
-ok(contains("uick", $val)  , "Contains 2");
-ok(contains("n f", $val)   , "Contains 3");
-ok(!contains("qqq", $val)  , "Contains 4");
+ok(contains($val, 'brown') , "Contains 1");
+ok(contains($val, 'uick')  , "Contains 2");
+ok(contains($val, 'n f')   , "Contains 3");
+ok(!contains($val, 'qqq')  , "Contains 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
