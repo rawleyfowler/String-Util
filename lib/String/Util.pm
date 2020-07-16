@@ -75,10 +75,10 @@ strings.
 
 String::Util can be installed with the usual routine:
 
- perl Makefile.PL
- make
- make test
- make install
+  perl Makefile.PL
+  make
+  make test
+  make install
 
 =head1 FUNCTIONS
 
@@ -410,20 +410,20 @@ single quotes and double quotes.  The value must begin and end with same type
 of quotes or nothing is done to the value. Undef input results in undef output.
 Some examples and what they return:
 
- unquote(q|'Hendrix'|);   # Hendrix
- unquote(q|"Hendrix"|);   # Hendrix
- unquote(q|Hendrix|);     # Hendrix
- unquote(q|"Hendrix'|);   # "Hendrix'
- unquote(q|O'Sullivan|);  # O'Sullivan
+  unquote(q|'Hendrix'|);   # Hendrix
+  unquote(q|"Hendrix"|);   # Hendrix
+  unquote(q|Hendrix|);     # Hendrix
+  unquote(q|"Hendrix'|);   # "Hendrix'
+  unquote(q|O'Sullivan|);  # O'Sullivan
 
 B<option:> braces
 
 If the braces option is true, surrounding braces such as [] and {} are also
 removed. Some examples:
 
- unquote(q|[Janis]|, braces=>1);  # Janis
- unquote(q|{Janis}|, braces=>1);  # Janis
- unquote(q|(Janis)|, braces=>1);  # Janis
+  unquote(q|[Janis]|, braces=>1);  # Janis
+  unquote(q|{Janis}|, braces=>1);  # Janis
+  unquote(q|(Janis)|, braces=>1);  # Janis
 
 =cut
 
@@ -530,9 +530,9 @@ string. So this code:
 
 would output something like this:
 
- kBGV
- NCWB
- 3tHJ
+  kBGV
+  NCWB
+  3tHJ
 
 If the string 'dictionary' is sent instead of an integer, then a word is
 randomly selected from a dictionary file.  By default, the dictionary file
@@ -547,9 +547,9 @@ So this code:
 
 would output something like this:
 
- mustache
- fronds
- browning
+  mustache
+  fronds
+  browning
 
 B<option:> alpha
 
@@ -562,9 +562,9 @@ numerals. For example, this code:
 
 would output something like this:
 
- qrML
- wmWf
- QGvF
+  qrML
+  wmWf
+  QGvF
 
 B<option:> numerals
 
@@ -577,9 +577,9 @@ characters. So this code:
 
 would output something like this:
 
- 3981
- 4734
- 2657
+  3981
+  4734
+  2657
 
 B<option:> strip_vowels
 
@@ -592,9 +592,9 @@ returned random string. So this code:
 
 would output something like this:
 
- Sk3v
- pV5z
- XhSX
+  Sk3v
+  pV5z
+  XhSX
 
 =cut
 
@@ -715,9 +715,9 @@ Returns true if the two given values are equal.  Also returns true if both
 are undef.  If only one is undef, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
- eqq('x', 'x'), "\n";      # True
- eqq('x', undef), "\n";    # False
- eqq(undef, undef), "\n";  # True
+  $var = eqq('x', 'x'), "\n";      # True
+  $var = eqq('x', undef), "\n";    # False
+  $var = eqq(undef, undef), "\n";  # True
 
 =cut
 
@@ -753,9 +753,9 @@ sub eqq {
 The opposite of neqq, returns true if the two values are *not* the same.
 Here are some examples and what they return.
 
- print neqq('x', 'x'), "\n";      # False
- print neqq('x', undef), "\n";    # True
- print neqq(undef, undef), "\n";  # False
+  $var = neqq('x', 'x'), "\n";      # False
+  $var = neqq('x', undef), "\n";    # True
+  $var = neqq(undef, undef), "\n";  # False
 
 =cut
 
@@ -967,13 +967,7 @@ sub randpost {
 
 Returns the given string represented as the ascii value of each character.
 
-For example, this code:
-
- ords('Hendrix')
-
-returns this string:
-
- {72}{101}{110}{100}{114}{105}{120}
+  $var = ords('Hendrix'); # {72}{101}{110}{100}{114}{105}{120}
 
 B<options>
 
@@ -984,35 +978,24 @@ B<options>
 If convert_spaces is true (which is the default) then spaces are converted to
 their matching ord values. So, for example, this code:
 
- ords('a b', convert_spaces=>1)
-
-returns this:
-
-{97}{32}{98}
+  $var = ords('a b', convert_spaces=>1); # {97}{32}{98}
 
 This code returns the same thing:
 
- ords('a b')
+  $var = ords('a b');                    # {97}{32}{98}
 
 If convert_spaces is false, then spaces are just returned as spaces. So this
 code:
 
- ords('a b', convert_spaces=>0);
+  ords('a b', convert_spaces=>0);        # {97} {98}
 
-returns
-
- {97} {98}
 
 =item * alpha_nums
 
 If the alpha_nums option is false, then characters 0-9, a-z, and A-Z are not
 converted. For example, this code:
 
- ords('a=b', alpha_nums=>0)
-
-returns this:
-
- a{61}b
+  $var = ords('a=b', alpha_nums=>0); # a{61}b
 
 =back
 
