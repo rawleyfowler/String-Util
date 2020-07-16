@@ -5,7 +5,7 @@ use overload;
 
 
 # version
-our $VERSION = '1.26';
+our $VERSION = '1.30';
 
 
 #------------------------------------------------------------------------------
@@ -1217,70 +1217,8 @@ as Perl itself. This software comes with B<NO WARRANTY> of any kind.
 Miko O'Sullivan
 F<miko@idocs.com>
 
-=head1 HISTORY
-
-=over
-
-=item Version 0.10, December 1, 2005
-
-Initial release
-
-=item Version 0.11, December 22, 2005
-
-This is a non-backwards compatible version.
-
-urldecode, urlencode were removed entirely.  All of the subs that used to
-modify values in place were changed so that they do not do so anymore, except
-for fullchomp.
-
-See http://www.xray.mpe.mpg.de/mailing-lists/modules/2005-12/msg00112.html
-for why these changes were made.
-
-=item Version 1.01, November 7, 2010
-
-Decided it was time to upload five years worth of changes.
-
-=item Version 1.20, July, 2012
-
-Properly listing prerequisites.
-
-=item Version 1.21, July 18, 2012
-
-Fixed error in POD.
-
-=item Version 1.22, July 20, 2012
-
-Fix in documentation for randpost().
-
-Clarified documentation for hascontent() and nocontent().
-
-=item Version 1.23, Sep 1, 2012
-
-Fixed error in META.yml.
-
-=item Version 1.24, December 31, 2014
-
-Cleaned up POD formatting.
-
-Changed file to using Unixish style newlines. I hadn't realized until now that
-it was using Windowish newline. How embarrasing.
-
-Added some features to ords().
-
-=item Version 1.25, January 4, 2015
-
-Added parentheses to braces option for unquote. Cleaned up and added to POD.
-Minor fixes to comments.
-
-Renamed equndef to eqq, and neundef to neqq. However, the old names have been
-kept as aliases.
-
-Minor cleanup of formatting.
-
-=item Version 1.26, Aug 29, 2016
-
-Fixed tests. No significant changes to module.
-
+Scott Baker
+F<scott@perturb.org>
 
 =back
 
