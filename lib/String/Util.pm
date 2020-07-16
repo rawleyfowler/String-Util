@@ -1070,12 +1070,7 @@ sub ords {
 Takes the output from ords() and returns the string that original created that
 output.
 
-For example, this command:
-
- deords('{72}{101}{110}{100}{114}{105}{120}')
-
-returns this string:
- Hendrix
+  $var = deords('{72}{101}{110}{100}{114}{105}{120}'); # 'Hendrix'
 
 =cut
 
@@ -1104,8 +1099,6 @@ sub deords {
 
 Checks if the string contains substring
 
-Examples:
-
   contains("Hello world", "Hello");   # true
   contains("Hello world", "llo wor"); # true
   contains("Hello world", "QQQ");     # false
@@ -1130,8 +1123,6 @@ sub contains {
 
 Checks if the string starts with the characters in substring
 
-Examples:
-
   startwidth("Hello world", "Hello"); # true
   startwidth("Hello world", "H");     # true
   startwidth("Hello world", "Q");     # false
@@ -1155,8 +1146,6 @@ sub startswith {
 =head2 endswith($string, $substring)
 
 Checks if the string ends with the characters in substring
-
-Examples:
 
   endswidth("Hello world", "world");   # true
   endswidth("Hello world", "d");       # true
