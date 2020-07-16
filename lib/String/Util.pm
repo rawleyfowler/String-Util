@@ -245,9 +245,11 @@ sub trim {
 # ltrim, rtrim
 #
 
-=head2 ltrim, rtrim
+=head2 ltrim(), rtrim()
 
-ltrim trims leading whitespace.  rtrim trims trailing whitespace.
+ltrim trims B<leading> whitespace.
+
+rtrim trims B<trailing> whitespace.
 
 =cut
 
@@ -707,7 +709,7 @@ sub randword {
 # formerly equndef
 #
 
-=head2 eqq($val1, $val2)
+=head2 eqq($scalar1, $scalar2)
 
 Returns true if the two given values are equal.  Also returns true if both
 are undef.  If only one is undef, or if they are both defined but different,
@@ -746,7 +748,7 @@ sub eqq {
 # formerly neundef
 #
 
-=head2 neqq($string1, $string2)
+=head2 neqq($scalar1, $scalar2)
 
 The opposite of neqq, returns true if the two values are *not* the same.
 Here are some examples and what they return.
