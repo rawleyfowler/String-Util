@@ -103,7 +103,7 @@ push @EXPORT_OK, qw[
 	collapse     crunch     htmlesc    trim      ltrim
 	rtrim        define     repeat     unquote   no_space
 	nospace      fullchomp  randcrypt  jsquote   cellfill
-	crunchlines  spacepad   startswith endswith  contains
+	crunchlines  startswith endswith   contains
 ];
 
 # the following functions return true or false based on their input
@@ -1226,31 +1226,6 @@ sub crunchlines {
 #------------------------------------------------------------------------------
 
 
-
-#------------------------------------------------------------------------------
-# spacepad
-#
-
-=head2 spacepad
-
-=cut
-
-sub spacepad {
-	my ($str, $length) = @_;
-
-	# add spaces
-	while (length($str) < $length) {
-		$str .= ' ';
-	}
-
-	# return
-	return $str;
-}
-#
-# spacepad
-#------------------------------------------------------------------------------
-
-
 # return true
 1;
 
@@ -1270,9 +1245,6 @@ F<miko@idocs.com>
 
 Scott Baker
 F<scott@perturb.org>
-
-=back
-
 
 =cut
 
