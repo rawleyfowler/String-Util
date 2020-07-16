@@ -125,7 +125,7 @@ push @EXPORT_OK, qw[ ords deords ];
 # collapse
 #
 
-=head2 collapse(string), crunch(string)
+=head2 collapse($string), crunch($string)
 
 C<collapse()> collapses all whitespace in the string down to single spaces.
 Also removes all leading and trailing whitespace.  Undefined input results in
@@ -162,7 +162,7 @@ sub crunch {
 # hascontent
 #
 
-=head2 hascontent(scalar), nocontent(scalar)
+=head2 hascontent($scalar), nocontent($scalar)
 
 hascontent() returns true if the given argument is defined and contains
 something besides whitespace.
@@ -198,7 +198,7 @@ sub nocontent {
 # trim
 #
 
-=head2 trim(string)
+=head2 trim($string)
 
 Returns the string with all leading and trailing whitespace removed.
 Trim on undef returns "".
@@ -279,7 +279,7 @@ sub rtrim {
 # no_space
 #
 
-=head2 no_space(string)
+=head2 no_space($string)
 
 Removes all whitespace characters from the given string.
 
@@ -342,7 +342,7 @@ sub htmlesc{
 # cellfill
 #
 
-=head2 cellfill(string)
+=head2 cellfill($string)
 
 Formats a string for literal output in an HTML table cell.  Works just like
 htmlesc() except that strings with no content (i.e. are undef or are just
@@ -408,7 +408,7 @@ sub jsquote {
 # unquote
 #
 
-=head2 unquote(string)
+=head2 unquote($string)
 
 If the given string starts and ends with quotes, removes them. Recognizes
 single quotes and double quotes.  The value must begin and end with same type
@@ -458,7 +458,7 @@ sub unquote {
 # define
 #
 
-=head2 define(scalar)
+=head2 define($scalar)
 
 Takes a single value as input. If the value is defined, it is returned
 unchanged.  If it is not defined, an empty string is returned.
@@ -523,7 +523,7 @@ sub repeat {
 # randword
 #
 
-=head2 randword(length, %options)
+=head2 randword($length, %options)
 
 Returns a random string of characters. String will not contain any vowels (to
 avoid distracting dirty words). First argument is the length of the return
@@ -753,7 +753,7 @@ sub eqq {
 # formerly neundef
 #
 
-=head2 neqq($str1, $str2)
+=head2 neqq($string1, $string2)
 
 The opposite of neqq, returns true if the two values are *not* the same.
 Here are some examples and what they return.
@@ -796,7 +796,7 @@ Those old names have been kept as aliases.
 # fullchomp
 #
 
-=head2 fullchomp(string)
+=head2 fullchomp($string)
 
 Works like chomp, but is a little more thorough about removing \n's and \r's
 even if they aren't part of the OS's standard end-of-line.
@@ -820,7 +820,7 @@ sub fullchomp {
 # randcrypt
 #
 
-=head2 randcrypt(string)
+=head2 randcrypt($string)
 
 Crypts the given string, seeding the encryption with a random two character
 seed.
@@ -1192,7 +1192,7 @@ sub endswith {
 # crunchlines
 #
 
-=head2 crunchlines($str)
+=head2 crunchlines($string)
 
 Compacts contiguous newlines into single newlines.  Whitespace between newlines
 is ignored, so that two newlines separated by whitespace is compacted down to a
