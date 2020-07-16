@@ -15,7 +15,7 @@ or
 
 ## Usage
 
-See [documentation](docs/index.html)
+See [documentation](https://htmlpreview.github.io/?https://github.com/scottchiefbaker/String-Util/blob/master/docs/index.html)
 
 ## Authors
 
