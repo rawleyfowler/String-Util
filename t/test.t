@@ -1,14 +1,11 @@
 #!/usr/bin/perl -w
 use strict;
+use warnings;
 use String::Util ':all';
-use Test::More tests => 25;
+use Test::More tests => 44;
 
 # general purpose variable
-my ($val, $org, $new, $got, $should);
-
-# stubs for comparison subroutines
-sub err;
-sub comp;
+my $val;
 
 
 #------------------------------------------------------------------------------
@@ -16,15 +13,10 @@ sub comp;
 #
 
 # basic crunching
-$val = "  Starflower \n\n\t  Miko     ";
-$val = crunch($val);
-comp $val, 'Starflower Miko';
+ok(collapse("  Starflower \n\n\t  Miko     ") eq 'Starflower Miko', 'Basic collapse');
+# collapse on undef returns undef
+ok(!defined collapse(undef), 'collapse undef should return undef');
 
-# crunch on undef returns undef
-if (defined crunch(undef))
-	{ err 'crunch', 'returned defined output for undefined input' }
-
-ok (1);
 #
 # crunch
 #------------------------------------------------------------------------------
@@ -34,22 +26,12 @@ ok (1);
 #------------------------------------------------------------------------------
 # hascontent
 #
-undef $val;
-hascontent($val) and err 'hascontent', 'returned true on undef';
+is(hascontent(undef), 0, "hascontent() undef");
+ok(!hascontent(''), "hascontent() ''");
+ok(!hascontent("   \t   \n\n  \r   \n\n\r     "), "hascontent() whitespace string");
+ok(hascontent("0"), "hascontent() zero");
+ok(hascontent(" x "), "hascontent() string with x");
 
-$val = '';
-hascontent($val) and err 'hascontent', 'returned true on empty string';
-
-$val = "   \t   \n\n  \r   \n\n\r     ";
-hascontent($val) and err 'hascontent', 'returned true on string that just has whitespace';
-
-$val = '0';
-hascontent($val) or err 'hascontent', 'returned false on zero';
-
-$val = ' x ';
-hascontent($val) or err 'hascontent', 'returned false defined string with an "x" in it';
-
-ok(1);
 #
 # hascontent
 #------------------------------------------------------------------------------
@@ -60,15 +42,12 @@ ok(1);
 #
 
 # basic trimming
-$val = '  steve     ';
-$val = trim($val);
-comp $val, 'steve';
+ok(trim(undef) eq "", 'trim undef');
+ok(trim("   Perl    ") eq "Perl", 'trim spaces');
+ok(trim("\t\tPerl\t\t") eq "Perl", 'trim tabs');
+ok(trim("\n\n\nPerl") eq "Perl", 'trim \n');
+ok(trim("\n\n\t\nPerl   \t\n") eq "Perl", 'trim all three');
 
-# trim on undef returns undef
-if (defined trim(undef))
-	{ err 'trim', 'returned defined output for undefined input' }
-
-ok (1);
 #
 # trim
 #------------------------------------------------------------------------------
@@ -78,11 +57,10 @@ ok (1);
 #------------------------------------------------------------------------------
 # no_space
 #
-$val = "  ok \n fine     ";
-$val = no_space($val);
-comp $val, 'okfine';
 
-ok (1);
+ok(no_space("  ok \n fine     ") eq 'okfine', 'no_space with whitespace');
+ok(no_space("Perl") eq 'Perl', 'no_space no whitespace');
+
 #
 # no_space
 #------------------------------------------------------------------------------
@@ -91,29 +69,29 @@ ok (1);
 # startswith
 $val = "Quick brown fox";
 
-is(startswith("Q", "Quick brown fox")    , 1, "Startswidth 1");
-is(startswith("Quick", "Quick brown fox"), 1, "Startswidth 2");
-is(startswith("zzz", "Quick brown fox")  , '', "Startswidth 3");
-is(startswith("c", "Quick brown fox")    , '', "Startswidth 4");
+#ok(startswith("Q", "Quick brown fox")     , "Startswidth 1");
+#ok(startswith("Quick", "Quick brown fox") , "Startswidth 2");
+#ok(!startswith("zzz", "Quick brown fox")  , "Startswidth 3");
+#ok(!startswith("c", "Quick brown fox")    , "Startswidth 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # endswith
 $val = "Quick brown fox";
 
-is(endswith("x", $val)   , 1, "Endswidth 1");
-is(endswith("fox", $val) , 1, "Endswidth 2");
-is(endswith(" fox", $val), 1, "Endswidth 3");
-is(endswith("qqq", $val) , '', "Endswidth 4");
+ok(endswith("x", $val)    , "Endswidth 1");
+ok(endswith("fox", $val)  , "Endswidth 2");
+ok(endswith(" fox", $val) , "Endswidth 3");
+ok(!endswith("qqq", $val)  , "Endswidth 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # contains
 $val = "Quick brown fox";
-is(contains("brown", $val), 1, "Contains 1");
-is(contains("uick", $val) , 1, "Contains 2");
-is(contains("n f", $val)  , 1, "Contains 3");
-is(contains("qqq", $val)  , '', "Contains 4");
+ok(contains("brown", $val) , "Contains 1");
+ok(contains("uick", $val)  , "Contains 2");
+ok(contains("n f", $val)   , "Contains 3");
+ok(!contains("qqq", $val)  , "Contains 4");
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
@@ -121,16 +99,9 @@ is(contains("qqq", $val)  , '', "Contains 4");
 #
 
 # basic operation of htmlesc
-$val = '<>"&';
-$val = htmlesc($val);
-comp $val, '&lt;&gt;&quot;&amp;';
+is(htmlesc('<>"&'), '&lt;&gt;&quot;&amp;', 'htmlesc special chars');
+is(htmlesc(undef) , '', 'htmlesc undef');
 
-# change undef to empty string
-undef $val;
-$val = htmlesc($val);
-comp $val, '';
-
-ok (1);
 #
 # htmlesc
 #------------------------------------------------------------------------------
@@ -141,21 +112,12 @@ ok (1);
 #
 
 # space-only string
-$val = '  ';
-$val = cellfill($val);
-comp $val, '&nbsp;';
-
+is(cellfill('  '), '&nbsp;', 'cellfill spaces');
 # undef string
-$val = undef;
-$val = cellfill($val);
-comp $val, '&nbsp;';
-
+is(cellfill(undef), '&nbsp;', 'cellfill undef');
 # string with content
-$val = 'x';
-$val = cellfill($val);
-comp $val, 'x';
+is(cellfill('x'), 'x', 'cellfill undef');
 
-ok (1);
 #
 # cellfill
 #------------------------------------------------------------------------------
@@ -171,32 +133,16 @@ ok (1);
 #------------------------------------------------------------------------------
 # eq_undef, neundef
 #
-unless (equndef 'a', 'a')
-	{ err 'equndef', 'failed comparison of identical defined values' }
+ok(equndef('a', 'a'),  'equndef same');
+ok(equndef(undef, undef), 'equndef undef');
+ok(!equndef('a', 'b'), 'equndef diff');
+ok(!equndef('a', 'undef'), 'equndef a and undef');
 
-unless (equndef undef, undef)
-	{ err 'equndef', 'failed comparison of two undefined values' }
+ok(!neundef('a', 'a'),  'nequndef same');
+ok(!neundef(undef, undef), 'nequndef undef');
+ok(neundef('a', 'b'), 'nequndef diff');
+ok(neundef('a', 'undef'), 'nequndef a and undef');
 
-if (equndef 'a', 'b')
-	{ err 'equndef', 'failed comparison of different defined values' }
-
-if (equndef 'a', undef)
-	{ err 'equndef', 'failed comparison of defined and undefined values' }
-
-
-if (neundef 'a', 'a')
-	{ err 'neundef', 'failed comparison of identical defined values' }
-
-if (neundef undef, undef)
-	{ err 'neundef', 'failed comparison of two undefined values' }
-
-unless (neundef 'a', 'b')
-	{ err 'neundef', 'failed comparison of different defined values' }
-
-unless (neundef 'a', undef)
-	{ err 'neundef', 'failed comparison of defined and undefined values' }
-
-ok (1);
 #
 # eq_undef, neundef
 #------------------------------------------------------------------------------
@@ -208,16 +154,10 @@ ok (1);
 #
 
 # define an undef
-undef $val;
-$val = define($val);
-comp $val, '';
-
+is(define(undef), '', 'define undef');
 # define an already defined value
-$val = 'x';
-define $val;
-comp $val, 'x';
+is(define('x'), 'x', 'define string');
 
-ok (1);
 #
 # define
 #------------------------------------------------------------------------------
@@ -228,21 +168,12 @@ ok (1);
 #
 
 # single quotes
-$val = "'Starflower'";
-$val = unquote($val);
-comp $val, 'Starflower';
-
+is(unquote("'Starflower'"), 'Starflower', 'unquote single quotes');
 # double quotes
-$val = '"Starflower"';
-$val = unquote($val);
-comp $val, 'Starflower';
-
+is(unquote('"Starflower"'), 'Starflower', 'unquote double quotes');
 # no quotes
-$val = 'Starflower';
-$val = unquote($val);
-comp $val, 'Starflower';
+is(unquote('Starflower'), 'Starflower', 'unquote no quotes');
 
-ok (1);
 #
 # unquote
 #------------------------------------------------------------------------------
@@ -251,13 +182,9 @@ ok (1);
 #------------------------------------------------------------------------------
 # jsquote
 #
-$val = qq|'yeah\n</script>'|;
-$got = jsquote($val);
-$should = q|'\'yeah\n<' + '/script>\''|;
 
-comp $got, $should;
+is(jsquote("'yeah\n</script>'"), q|'\'yeah\n<' + '/script>\''|, 'jsquote');
 
-ok (1);
 #
 # jsquote
 #------------------------------------------------------------------------------
@@ -268,11 +195,8 @@ ok (1);
 #
 
 # scalar context
-$val = qq|Starflower\n\r\r\r\n|;
-$val = fullchomp($val);
-comp $val, 'Starflower';
+is(fullchomp("Starflower\n\r\r\r\n"), 'Starflower', 'fullchomp');
 
-ok (1);
 #
 # fullchomp
 #------------------------------------------------------------------------------
@@ -284,13 +208,10 @@ ok (1);
 # randword
 # Not sure how to test this besides making sure it actually runs.
 #
-undef $val;
+
 $val = randword(20);
+ok(defined($val) && (length($val) == 20), 'randword');
 
-unless ( defined($val) && (length($val) == 20) )
-	{ err 'randword', 'failed to return random string of appropriate length' }
-
-ok(1);
 #
 # randword
 #------------------------------------------------------------------------------
@@ -301,52 +222,9 @@ ok(1);
 # randcrypt
 # Not sure how to test this besides making sure it actually runs.
 #
-$val = 'Mypassword';
-$val = randcrypt($val);
+$val = randcrypt('sekrit_password');
+ok(defined($val) && length($val) > 10, 'randcrypt');
 
-ok(1);
 #
 # randcrypt
 #------------------------------------------------------------------------------
-
-
-
-###############################################################################
-# end of tests
-###############################################################################
-
-
-#------------------------------------------------------------------------------
-# err
-#
-sub err {
-	my ($function_name, $err) = @_;
-
-	print STDERR $function_name, ': ', $err, "\n";
-	ok(0);
-	exit;
-}
-#
-# err
-#------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------
-# comp
-#
-sub comp {
-	my ($is, $shouldbe) = @_;
-
-	if(! equndef($is, $shouldbe)) {
-		print STDERR
-			"\n",
-			"\tis:         ", (defined($is) ?       $is       : '[undef]'), "\n",
-			"\tshould be : ", (defined($shouldbe) ? $shouldbe : '[undef]'), "$shouldbe\n\n";
-		ok(0);
-		exit;
-	}
-}
-#
-# comp
-#------------------------------------------------------------------------------
-
