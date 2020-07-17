@@ -27,10 +27,11 @@ ok(!defined collapse(undef), 'collapse undef should return undef');
 # hascontent
 #
 is(hascontent(undef), 0, "hascontent() undef");
-ok(!hascontent(''), "hascontent() ''");
-ok(!hascontent("   \t   \n\n  \r   \n\n\r     "), "hascontent() whitespace string");
-ok(hascontent("0"), "hascontent() zero");
-ok(hascontent(" x "), "hascontent() string with x");
+
+ok(!hascontent('')                               , "hascontent() ''");
+ok(!hascontent("   \t   \n\n  \r   \n\n\r     ") , "hascontent() whitespace string");
+ok(hascontent("0")                               , "hascontent() zero");
+ok(hascontent(" x ")                             , "hascontent() string with x");
 
 #
 # hascontent
@@ -42,14 +43,14 @@ ok(hascontent(" x "), "hascontent() string with x");
 #
 
 # basic trimming
-is(trim(undef), "", 'trim undef');
-is(trim("   Perl    "), "Perl", 'trim spaces');
-is(trim("\t\tPerl\t\t"), "Perl", 'trim tabs');
-is(trim("\n\n\nPerl"), "Perl", 'trim \n');
-is(trim("\n\n\t\nPerl   \t\n"), "Perl", 'trim all three');
+is(trim(undef)                 , ""         , 'trim undef');
+is(trim("   Perl    ")         , "Perl"     , 'trim spaces');
+is(trim("\t\tPerl\t\t")        , "Perl"     , 'trim tabs');
+is(trim("\n\n\nPerl")          , "Perl"     , 'trim \n');
+is(trim("\n\n\t\nPerl   \t\n") , "Perl"     , 'trim all three');
 
-is(ltrim("\n\n\t\nPerl   "), "Perl   ", 'ltrim');
-is(rtrim("\n\tPerl   "), "\n\tPerl", 'rtrim');
+is(ltrim("\n\n\t\nPerl   ")    , "Perl   "  , 'ltrim');
+is(rtrim("\n\tPerl   ")        , "\n\tPerl" , 'rtrim');
 
 #
 # trim
@@ -61,8 +62,8 @@ is(rtrim("\n\tPerl   "), "\n\tPerl", 'rtrim');
 # no_space
 #
 
-ok(no_space("  ok \n fine     ") eq 'okfine', 'no_space with whitespace');
-ok(no_space("Perl") eq 'Perl', 'no_space no whitespace');
+is(no_space("  ok \n fine     ") , 'okfine' , 'no_space with whitespace');
+is(no_space("Perl")              , 'Perl'   , 'no_space no whitespace');
 
 #
 # no_space
@@ -102,8 +103,8 @@ ok(!contains($val, 'qqq')  , "Contains 4");
 #
 
 # basic operation of htmlesc
-is(htmlesc('<>"&'), '&lt;&gt;&quot;&amp;', 'htmlesc special chars');
-is(htmlesc(undef) , '', 'htmlesc undef');
+is(htmlesc('<>"&') , '&lt;&gt;&quot;&amp;' , 'htmlesc special chars');
+is(htmlesc(undef)  , ''                    , 'htmlesc undef');
 
 #
 # htmlesc
@@ -126,25 +127,18 @@ is(htmlesc(undef) , '', 'htmlesc undef');
 #------------------------------------------------------------------------------
 
 
-
-
-
-
-###########################
-
-
 #------------------------------------------------------------------------------
 # eq_undef, neundef
 #
-ok(equndef('a', 'a'),  'equndef same');
-ok(equndef(undef, undef), 'equndef undef');
-ok(!equndef('a', 'b'), 'equndef diff');
-ok(!equndef('a', 'undef'), 'equndef a and undef');
+ok(equndef('a'   , 'a')     , 'equndef same');
+ok(equndef(undef , undef)   , 'equndef undef');
+ok(!equndef('a'  , 'b')     , 'equndef diff');
+ok(!equndef('a'  , 'undef') , 'equndef a and undef');
 
-ok(!neundef('a', 'a'),  'nequndef same');
-ok(!neundef(undef, undef), 'nequndef undef');
-ok(neundef('a', 'b'), 'nequndef diff');
-ok(neundef('a', 'undef'), 'nequndef a and undef');
+ok(!neundef('a'   , 'a')     , 'nequndef same');
+ok(!neundef(undef , undef)   , 'nequndef undef');
+ok(neundef('a'    , 'b')     , 'nequndef diff');
+ok(neundef('a'    , 'undef') , 'nequndef a and undef');
 
 #
 # eq_undef, neundef
@@ -171,11 +165,11 @@ ok(neundef('a', 'undef'), 'nequndef a and undef');
 #
 
 # single quotes
-is(unquote("'Starflower'"), 'Starflower', 'unquote single quotes');
+is(unquote("'Starflower'") , 'Starflower' , 'unquote single quotes');
 # double quotes
-is(unquote('"Starflower"'), 'Starflower', 'unquote double quotes');
+is(unquote('"Starflower"') , 'Starflower' , 'unquote double quotes');
 # no quotes
-is(unquote('Starflower'), 'Starflower', 'unquote no quotes');
+is(unquote('Starflower')   , 'Starflower' , 'unquote no quotes');
 
 #
 # unquote
