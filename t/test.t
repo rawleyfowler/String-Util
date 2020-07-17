@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use String::Util ':all';
-use Test::More tests => 48;
+use Test::More tests => 50;
 
 # general purpose variable
 my $val;
@@ -42,11 +42,14 @@ ok(hascontent(" x "), "hascontent() string with x");
 #
 
 # basic trimming
-ok(trim(undef) eq "", 'trim undef');
-ok(trim("   Perl    ") eq "Perl", 'trim spaces');
-ok(trim("\t\tPerl\t\t") eq "Perl", 'trim tabs');
-ok(trim("\n\n\nPerl") eq "Perl", 'trim \n');
-ok(trim("\n\n\t\nPerl   \t\n") eq "Perl", 'trim all three');
+is(trim(undef), "", 'trim undef');
+is(trim("   Perl    "), "Perl", 'trim spaces');
+is(trim("\t\tPerl\t\t"), "Perl", 'trim tabs');
+is(trim("\n\n\nPerl"), "Perl", 'trim \n');
+is(trim("\n\n\t\nPerl   \t\n"), "Perl", 'trim all three');
+
+is(ltrim("\n\n\t\nPerl   "), "Perl   ", 'ltrim');
+is(rtrim("\n\tPerl   "), "\n\tPerl", 'rtrim');
 
 #
 # trim
