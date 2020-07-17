@@ -10,7 +10,6 @@ provides:
         file: lib/String/Util.pm
         version: 1.24
 requires:
-    Number::Misc: 0
-    Test: 0
+    Test::More: 0
     perl: 5.003
 version: 1.24

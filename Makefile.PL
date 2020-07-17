@@ -11,8 +11,7 @@ $make_args = {
                'VERSION_FROM' => 'lib/String/Util.pm',
                'LICENSE' => 'perl',
                'PREREQ_PM' => {
-                                'Test' => 0,
-                                'Number::Misc' => 0
+                                'Test::More' => 0,
                               }
              };
 

@@ -2,7 +2,7 @@ MANIFEST
 Changes
 META.yml
 Makefile.PL
-README
+README.md
 Build.PL
 LICENSE
 t/test.t

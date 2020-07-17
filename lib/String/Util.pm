@@ -624,7 +624,6 @@ sub randword {
 
 			# use Encode module
 			require Encode;
-			require Number::Misc;
 
 			# get line count
 			$cmd = qq|$PATHS{'wc'} -l "$PATHS{'words'}"|;
@@ -632,7 +631,7 @@ sub randword {
 			$line_count =~ s|\s.*||s;
 
 			# get random line
-			$line_num = Number::Misc::rand_in_range(0, $line_count);
+			$line_num = rand($line_count);
 
 			# untaint line number
 			unless ($line_num =~ m|^([0-9]+)$|s) { die "invalid line number: $line_num" }
