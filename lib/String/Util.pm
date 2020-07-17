@@ -14,62 +14,12 @@ our $VERSION = '1.30';
 
 =head1 NAME
 
-String::Util -- String processing utilities
-
-=head1 SYNOPSIS
-
-  use String::Util ':all';
-
-  # "crunch" whitespace and remove leading/trailing whitespace
-  $val = crunch($val);
-
-  # does this value have "content", does it contain something besides whitespace?
-  if (hascontent $val) {...}
-
-  # format for display in a web page
-  $val = htmlesc($val);
-
-  # format for display in a web page table cell
-  $val = cellfill($val);
-
-  # remove leading/trailing whitespace
-  $val = trim($val);
-
-  # ensure defined value
-  $val = define($val);
-
-  # repeat string x number of times
-  $val = repeat($val, $iterations);
-
-  # remove leading/trailing quotes
-  $val = unquote($val);
-
-  # remove all whitespace
-  $val = no_space($val);
-
-  # remove trailing \r and \n, regardless of what
-  # the OS considers an end-of-line
-  $val = fullchomp($val);
-
-  # or call in void context:
-  fullchomp $val;
-
-  # encrypt string using random seed
-  $val = randcrypt($val);
-
-  # are these two values equal, where two undefs count as "equal"?
-  if (eqq $a, $b) {...}
-
-  # are these two values different, where two undefs count as "equal"?
-  if (neqq $a, $b) {...}
-
-  # get a random string of some specified length
-  $val = randword(10);
+String::Util -- String processing utility functions
 
 =head1 DESCRIPTION
 
-String::Util provides a collection of small, handy utilities for processing
-strings.
+String::Util provides a collection of small, handy functions for processing
+strings in various ways.
 
 =head1 INSTALLATION
 
@@ -206,12 +156,16 @@ sub nocontent {
 # trim
 #
 
-=head2 trim($string)
+=head2 trim($string), ltrim($string), rtrim($string)
 
 Returns the string with all leading and trailing whitespace removed.
 Trim on undef returns "".
 
   $var = trim(" my string  "); # "my string"
+
+ltrim() trims B<leading> whitespace only.
+
+rtrim() trims B<trailing> whitespace only.
 
 =cut
 
@@ -235,14 +189,6 @@ sub trim {
 #------------------------------------------------------------------------------
 # ltrim, rtrim
 #
-
-=head2 ltrim($string), rtrim($string)
-
-ltrim trims B<leading> whitespace.
-
-rtrim trims B<trailing> whitespace.
-
-=cut
 
 sub ltrim {
 	my $s = shift();
@@ -281,7 +227,7 @@ sub rtrim {
 =head2 no_space($string)
 
 Removes B<all> whitespace characters from the given string. This includes spaces
-between words
+between words.
 
   $var = no_space("  Hello World!   "); # "HelloWorld!"
 
