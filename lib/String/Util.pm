@@ -218,23 +218,16 @@ Trim on undef returns "".
 =cut
 
 sub trim {
-	my ($val, %opts) = @_;
+	my $s = shift();
 
-	if (!defined($val)) {
+	if (!defined($s) || length($s) == 0) {
 		return "";
 	}
 
-	if (defined $val) {
-		# trim left
-		if ( defined($opts{'left'}) ? $opts{'left'} : 1 )
-			{ $val =~ s|^\s+||s }
+	$s =~ s/^\s*//;
+	$s =~ s/\s*$//;
 
-		# trim right
-		if ( defined($opts{'right'}) ? $opts{'left'} : 1 )
-			{ $val =~ s|\s+$||s }
-	};
-
-	return $val;
+	return $s;
 }
 #
 # trim
@@ -245,7 +238,7 @@ sub trim {
 # ltrim, rtrim
 #
 
-=head2 ltrim(), rtrim()
+=head2 ltrim($string), rtrim($string)
 
 ltrim trims B<leading> whitespace.
 
@@ -254,11 +247,27 @@ rtrim trims B<trailing> whitespace.
 =cut
 
 sub ltrim {
-	return trim($_[0], right=>0);
+	my $s = shift();
+
+	if (!defined($s) || length($s) == 0) {
+		return "";
+	}
+
+	$s =~ s/^\s*//;
+
+	return $s;
 }
 
 sub rtrim {
-	return trim($_[0], left=>0);
+	my $s = shift();
+
+	if (!defined($s) || length($s) == 0) {
+		return "";
+	}
+
+	$s =~ s/\s*$//;
+
+	return $s;
 }
 
 #
