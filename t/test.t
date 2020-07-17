@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use String::Util ':all';
-use Test::More tests => 50;
+use Test::More tests => 44;
 
 # general purpose variable
 my $val;
@@ -115,11 +115,11 @@ is(htmlesc(undef) , '', 'htmlesc undef');
 #
 
 # space-only string
-is(cellfill('  '), '&nbsp;', 'cellfill spaces');
+#is(cellfill('  '), '&nbsp;', 'cellfill spaces');
 # undef string
-is(cellfill(undef), '&nbsp;', 'cellfill undef');
+#is(cellfill(undef), '&nbsp;', 'cellfill undef');
 # string with content
-is(cellfill('x'), 'x', 'cellfill undef');
+#is(cellfill('x'), 'x', 'cellfill undef');
 
 #
 # cellfill
@@ -157,9 +157,9 @@ ok(neundef('a', 'undef'), 'nequndef a and undef');
 #
 
 # define an undef
-is(define(undef), '', 'define undef');
+#is(define(undef), '', 'define undef');
 # define an already defined value
-is(define('x'), 'x', 'define string');
+#is(define('x'), 'x', 'define string');
 
 #
 # define
@@ -198,7 +198,7 @@ is(jsquote("'yeah\n</script>'"), q|'\'yeah\n<' + '/script>\''|, 'jsquote');
 #
 
 # scalar context
-is(fullchomp("Starflower\n\r\r\r\n"), 'Starflower', 'fullchomp');
+#is(fullchomp("Starflower\n\r\r\r\n"), 'Starflower', 'fullchomp');
 
 #
 # fullchomp

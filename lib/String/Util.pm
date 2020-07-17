@@ -2,7 +2,7 @@ package String::Util;
 use strict;
 use Carp;
 use overload;
-
+use 5.010;
 
 # version
 our $VERSION = '1.30';
@@ -111,7 +111,7 @@ push @EXPORT_OK, qw[
 	startswith  endswith  contains];
 
 # the following function returns a random string of some type
-push @EXPORT_OK, qw[ randword randpost ];
+push @EXPORT_OK, qw[ randword ];
 
 # the following function returns the unicode values of a string
 push @EXPORT_OK, qw[ ords deords ];
@@ -126,16 +126,14 @@ push @EXPORT_OK, qw[ ords deords ];
 # collapse
 #
 
-=head2 collapse($string), crunch($string)
+=head2 collapse($string)
 
 C<collapse()> collapses all whitespace in the string down to single spaces.
 Also removes all leading and trailing whitespace.  Undefined input results in
 undefined output.
 
-C<crunch()> is the old name for C<collapse()>. I decided that "crunch" never
-sounded right. Spaces don't go "crunch", they go "poof" like a collapsing
-ballon. However, C<crunch()> will continue to work as an alias for
-C<collapse()>.
+B<Note:> C<crunch()> is an alias to this function. It is considered deprecated.
+It may be removed in future versions.
 
   $var = collapse("  Hello     world!    "); # "Hello world!"
 
@@ -346,16 +344,10 @@ sub htmlesc {
 # cellfill
 #
 
-=head2 cellfill($string)
-
-Formats a string for literal output in an HTML table cell.  Works just like
-htmlesc() except that strings with no content (i.e. are undef or are just
-whitespace) are returned as C<&nbsp;>.
-
-=cut
-
 sub cellfill{
 	my ($val) = @_;
+
+	carp("cellfill() is deprecated and will be removed in future versions");
 
 	if (hascontent($val)) {
 		$val = htmlesc($val);
@@ -462,20 +454,9 @@ sub unquote {
 # define
 #
 
-=head2 define($scalar)
-
-Takes a single value as input. If the value is defined, it is returned
-unchanged.  If it is not defined, an empty string is returned.
-
-This subroutine is useful for printing when an undef should simply be
-represented as an empty string.  Perl already treats undefs as empty strings in
-string context, but this subroutine makes the
-L<warnings module|http://perldoc.perl.org/warnings.html>
-go away.  And you B<ARE> using warnings, right?
-
-=cut
-
 sub define {
+	carp("define() is deprecated and may be removed in future version");
+
 	my ($val) = @_;
 
 	# if overloaded object, get return value and
@@ -502,13 +483,13 @@ sub define {
 Returns the given string repeated the given number of times. The following
 command outputs "Fred" three times:
 
- print repeat('Fred', 3), "\n";
+  print repeat('Fred', 3), "\n";
 
 Note that repeat() was created a long time based on a misunderstanding of how
 the perl operator 'x' works.  The following command using 'x' would perform
 exactly the same as the above command.
 
- print 'Fred' x 3, "\n";
+  print 'Fred' x 3, "\n";
 
 Use whichever you prefer.
 
@@ -727,6 +708,9 @@ returns false. Here are some examples and what they return.
   $var = eqq('x', undef), "\n";    # False
   $var = eqq(undef, undef), "\n";  # True
 
+B<Note:> equndef() is an alias to this function. It is considered deprecated.
+It may be removed in future versions.
+
 =cut
 
 # alias equndef to eqq
@@ -765,6 +749,9 @@ Here are some examples and what they return.
   $var = neqq('x', undef), "\n";    # True
   $var = neqq(undef, undef), "\n";  # False
 
+B<Note:> neundef() is an alias to this function. It is considered deprecated.
+It may be removed in future versions.
+
 =cut
 
 sub neundef {
@@ -780,35 +767,12 @@ sub neqq {
 
 
 #------------------------------------------------------------------------------
-# pod to note renaming of equndef to eqq and neundef to neqq
-#
-
-=head2 equndef(), neundef()
-
-equndef() has been renamed to eqq(). neundef() has been renamed to neqq().
-Those old names have been kept as aliases.
-
-=cut
-
-#
-# pod to note renaming of equndef to eqq and neundef to neqq
-#------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------
 # fullchomp
 #
 
-=head2 fullchomp($string)
-
-Works like chomp, but is a little more thorough about removing \n's and \r's
-even if they aren't part of the OS's standard end-of-line.
-
-Undefs are returned as undefs.
-
-=cut
-
 sub fullchomp {
+	carp("fullchomp() is deprecated and may be removed in future versions");
+
 	my ($line) = @_;
 	defined($line) and $line =~ s|[\r\n]+$||s;
 	defined(wantarray) and return $line;
@@ -838,132 +802,6 @@ sub randcrypt {
 }
 #
 # randcrypt
-#------------------------------------------------------------------------------
-
-
-
-#------------------------------------------------------------------------------
-# randpost
-#
-
-=head2 randpost(%opts)
-
-Returns a string that sorta looks like one or more paragraphs.
-
-B<option:> word_count
-
-Sets how many words should be in the post.  By default a random number from
-1 to 250 is used.
-
-B<option:> par_odds
-
-Sets the odds of starting a new paragraph after any given word.  By default the
-value is .05, which means paragraphs will have an average about twenty words.
-
-B<option:> par
-
-Sets the string to put at the end or the start and end of a paragraph.
-Defaults to two newlines for the end of a pargraph.
-
-If this option is a single scalar, that string is added to the end of each
-paragraph.
-
-To set both the start and end string, use an array reference.  The first
-element should be the string to put at the start of a paragraph, the second
-should be the string to put at the end of a paragraph.
-
-B<option:> max_length
-
-Sets the maximum length of the returned string, including paragraph delimiters.
-
-=cut
-
-sub randpost {
-	my (%opts) = @_;
-	my (@rv, $str, $pars, $par_odds, $par_open, $par_close);
-	my ($word_count);
-
-
-	# determine word count
-	if (defined($opts{'word_count'}) || defined($opts{'words'}))
-		{ $word_count = $opts{'word_count'} || $opts{'words'} }
-	else
-		{ $word_count = int(rand() * 250) }
-
-	# determine paragraph odds
-	if (defined $opts{'par_odds'})
-		{ $par_odds = $opts{'par_odds'} }
-	else
-		{ $par_odds = .05 }
-
-
-	#- - - - - - - - - - - - - - - - - - - - - - - - -
-	# determine paragraph separator
-	#
-	if (defined $opts{'par'}) {
-		$pars = 1;
-
-		if (ref $opts{'par'}) {
-			$par_open = $opts{'par'}->[0];
-			$par_close = $opts{'par'}->[1];
-		}
-
-		else {
-			$par_open = '';
-			$par_close = $opts{'par'};
-		}
-	}
-
-	else {
-		$par_open = '';
-		$par_close = "\n\n";
-	}
-	#
-	# determine paragraph separator
-	#- - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-	#- - - - - - - - - - - - - - - - - - - - - - - - -
-	# build array of words
-	#
-	foreach my $i (0..$word_count) {
-		my ($word, $p);
-
-		if ( $i && ($i < $word_count-1) && $pars && (rand() < $par_odds) ) {
-			$word = $par_close . $par_open;
-		}
-
-		else {
-			my $word_length = int(rand() * 15);
-			$word = lc randword($word_length, alpha=>1, strip_vowels=>0, %opts);
-		}
-
-		push @rv, $word;
-	}
-	#
-	# build array of words
-	#- - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-	# clean up return value
-	$str = $par_open . join(' ', @rv) . $par_close;
-	$str =~ s|\s+$||;
-	$str =~ s|^\s+||;
-	$str =~ s| +\n|\n|g;
-	$str =~ s|\n +|\n|g;
-	$str =~ s| +| |g;
-
-	# if maximum length sent, reduce to that length
-	if ($opts{'max_length'}) {
-		$str = substr($str, 0, $opts{'max_length'});
-		$str =~ s|\s+$||s;
-	}
-
-	# return words separated by spaces
-	return $str;
-}
-#
-# randpost
 #------------------------------------------------------------------------------
 
 
