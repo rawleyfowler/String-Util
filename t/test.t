@@ -71,10 +71,10 @@ is(no_space("Perl")              , 'Perl'   , 'no_space no whitespace');
 # startswith
 $val = "Quick brown fox";
 
-ok(startswith("Quick brown fox", 'Q')     , "Startswidth 1");
-ok(startswith("Quick brown fox", 'Quick') , "Startswidth 2");
-ok(!startswith("Quick brown fox", 'z')    , "Startswidth 3");
-ok(!startswith("Quick brown fox", 'qqq')  , "Startswidth 4");
+ok(startswith("Quick brown fox", 'Q')     , "Startswidth char");
+ok(startswith("Quick brown fox", 'Quick') , "Startswidth word");
+ok(!startswith("Quick brown fox", 'z')    , "Does NOT start with char");
+ok(!startswith("Quick brown fox", 'Qqq')  , "Does NOT start with string");
 #------------------------------------------------------------------------------
 
 
@@ -82,20 +82,20 @@ ok(!startswith("Quick brown fox", 'qqq')  , "Startswidth 4");
 # endswith
 $val = "Quick brown fox";
 
-ok(endswith($val, 'x')    , "Endswidth 1");
-ok(endswith($val, 'fox')  , "Endswidth 2");
-ok(endswith($val, ' fox') , "Endswidth 3");
-ok(!endswith($val, 'qqq') , "Endswidth 4");
+ok(endswith($val, 'x')    , "Endswidth char");
+ok(endswith($val, 'fox')  , "Endswidth word");
+ok(endswith($val, ' fox') , "Endswidth space word");
+ok(!endswith($val, 'foq') , "Does not end width string");
 #------------------------------------------------------------------------------
 
 
 #------------------------------------------------------------------------------
 # contains
 $val = "Quick brown fox";
-ok(contains($val, 'brown') , "Contains 1");
-ok(contains($val, 'uick')  , "Contains 2");
-ok(contains($val, 'n f')   , "Contains 3");
-ok(!contains($val, 'qqq')  , "Contains 4");
+ok(contains($val, 'brown') , "Contains word");
+ok(contains($val, 'uick')  , "Contains word 2");
+ok(contains($val, 'n f')   , "Contains word with space");
+ok(!contains($val, 'bri')  , "Does not contains word");
 #------------------------------------------------------------------------------
 
 
@@ -134,12 +134,12 @@ is(htmlesc(undef)  , ''                    , 'htmlesc undef');
 ok(equndef('a'   , 'a')     , 'equndef same');
 ok(equndef(undef , undef)   , 'equndef undef');
 ok(!equndef('a'  , 'b')     , 'equndef diff');
-ok(!equndef('a'  , 'undef') , 'equndef a and undef');
+ok(!equndef('a'  , undef)   , 'equndef a and undef');
 
 ok(!neundef('a'   , 'a')     , 'nequndef same');
 ok(!neundef(undef , undef)   , 'nequndef undef');
 ok(neundef('a'    , 'b')     , 'nequndef diff');
-ok(neundef('a'    , 'undef') , 'nequndef a and undef');
+ok(neundef('a'    , undef)   , 'nequndef a and undef');
 
 #
 # eq_undef, neundef
@@ -165,11 +165,13 @@ ok(neundef('a'    , 'undef') , 'nequndef a and undef');
 #
 
 # single quotes
-is(unquote("'Starflower'") , 'Starflower' , 'unquote single quotes');
+is(unquote("'Starflower'")     , 'Starflower'      , 'unquote single quotes');
 # double quotes
-is(unquote('"Starflower"') , 'Starflower' , 'unquote double quotes');
+is(unquote('"Starflower"')     , 'Starflower'      , 'unquote double quotes');
 # no quotes
-is(unquote('Starflower')   , 'Starflower' , 'unquote no quotes');
+is(unquote('Starflower')       , 'Starflower'      , 'unquote no quotes');
+# Quote in middle
+is(unquote("Don't lets start") , "Don't lets start", 'unquote with quote in middle');
 
 #
 # unquote
