@@ -6,13 +6,6 @@
 
     cpanm String::Util
 
-or
-
-    perl Makefile.PL
-    make
-    make test
-    make install
-
 ## Usage
 
 See [documentation](https://metacpan.org/pod/String::Util)
