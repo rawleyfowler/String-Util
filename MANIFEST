@@ -1,10 +1,8 @@
 MANIFEST
 Changes
-META.yml
 Makefile.PL
 README.md
 Build.PL
 LICENSE
 t/test.t
-lib/String/Util.pod
 lib/String/Util.pm
