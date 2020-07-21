@@ -1,8 +1,0 @@
-MANIFEST
-Changes
-Makefile.PL
-README.md
-Build.PL
-LICENSE
-t/test.t
-lib/String/Util.pm
