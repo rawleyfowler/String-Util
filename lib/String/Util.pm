@@ -1008,7 +1008,7 @@ sub crunchlines {
 
 __END__
 
-=head1 TERMS AND CONDITIONS
+=head1 COPYRIGHT AND LICENSE
 
 Copyright (c) 2012-2016 by Miko O'Sullivan.  All rights reserved.  This program
 is free software; you can redistribute it and/or modify it under the same terms
