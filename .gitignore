@@ -4,3 +4,4 @@ Makefile
 blib/
 pm_to_blib
 pod2htmd.tmp
+String-Util-*
