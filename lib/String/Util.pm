@@ -1016,9 +1016,9 @@ as Perl itself. This software comes with B<NO WARRANTY> of any kind.
 
 =head1 AUTHORS
 
-Miko O'Sullivan E<lt>miko@idocs.com<gt>
+Miko O'Sullivan <miko@idocs.com>
 
-Scott Baker E<lt><scott@perturb.org<gt>
+Scott Baker <scott@perturb.org>
 
 =cut
 
