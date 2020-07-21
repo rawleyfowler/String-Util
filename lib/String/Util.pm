@@ -58,7 +58,8 @@ push @EXPORT_OK, qw[
 # the following functions return true or false based on their input
 push @EXPORT_OK, qw[
 	hascontent  nocontent eqq equndef neqq neundef
-	startswith  endswith  contains];
+	startswith  endswith  contains    sanitize
+];
 
 # the following function returns a random string of some type
 push @EXPORT_OK, qw[ randword ];
@@ -918,6 +919,30 @@ sub startswith {
 	my $ret = index($str, $substr, 0) == 0;
 
 	return $ret;
+}
+
+=head2 sanitize($string)
+
+Sanitize all non alpha-numeric characters in a string to underscores.
+This is useful to take a URL, or filename, or text description and know
+you can use it safely in a URL or a filename.
+
+B<Note:> This will remove any trailing or leading '_' on the string
+
+  $var = sanitize("http://www.google.com/") # http_www_google_com
+  $var = sanitize("foo_bar()";              # foo_bar
+  $var = sanitize("/path/to/file.txt");     # path_to_file_txt
+
+=cut
+
+sub sanitize {
+	my $str = shift();
+
+	$str =~ s/[\W_]+/_/g;
+	$str =~ s/\A_+//g;
+	$str =~ s/_+\z//g;
+
+	return $str;
 }
 
 =head2 endswith($string, $substring)

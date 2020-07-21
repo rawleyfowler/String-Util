@@ -200,6 +200,9 @@ is(jsquote("'yeah\n</script>'"), q|'\'yeah\n<' + '/script>\''|, 'jsquote');
 # fullchomp
 #------------------------------------------------------------------------------
 
+is(sanitize("http://www.google.com/"), 'http_www_google_com', 'Sanitize URL');
+is(sanitize("foo_bar()")             , 'foo_bar'            , 'Sanitize function name');
+is(sanitize("/path/to/file.txt")     , 'path_to_file_txt'   , 'Sanitize path');
 
 #------------------------------------------------------------------------------
 # randword
