@@ -12,5 +12,5 @@ See [documentation](https://metacpan.org/pod/String::Util)
 
 ## Authors
 
-Scott Baker: scott@perturb.org  
-Miko O'Sullivan: miko@idocs.com
+* Scott Baker: scott@perturb.org
+* Miko O'Sullivan: miko@idocs.com
