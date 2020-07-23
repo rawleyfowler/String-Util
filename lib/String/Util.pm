@@ -23,12 +23,7 @@ strings in various ways.
 
 =head1 INSTALLATION
 
-String::Util can be installed with the usual routine:
-
-  perl Makefile.PL
-  make
-  make test
-  make install
+  cpanm String::Util
 
 =head1 FUNCTIONS
 
