@@ -251,7 +251,7 @@ sub nospace { return no_space(@_) }
 # htmlesc
 #
 
-=head2 htmlesc(string)
+=head2 htmlesc($string)
 
 Formats a string for literal output in HTML.  An undefined value is returned as
 an empty string.
