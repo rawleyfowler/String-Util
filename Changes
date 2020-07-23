@@ -1,7 +1,5 @@
 {{$NEXT}}
 
-1.30  2020-07-23
-
 	- Ownership transferred to Scott Baker
 
 	- Removed undocumented function: spacepad()
