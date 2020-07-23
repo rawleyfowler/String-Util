@@ -61,7 +61,8 @@
    },
    "version" : "1.30",
    "x_contributors" : [
-      "Dan Book <grinnz@gmail.com>"
+      "Dan Book <grinnz@gmail.com>",
+      "Scott Baker <scott.baker@directlink.coop>"
    ],
    "x_generated_by_perl" : "v5.24.4",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.12",
