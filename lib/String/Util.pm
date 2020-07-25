@@ -131,16 +131,27 @@ C<nocontent()> returns the negation of C<hascontent()>.
 =cut
 
 sub hascontent {
-	my ($val) = @_;
+	my $val = shift();
 
-	defined($val) or return 0;
-	$val =~ m|\S|s or return 0;
+	if (!defined($val)) {
+		return 0;
+	}
 
-	return 1;
+	# If there are ANY non-space characters in it
+	if ($val =~ m|\S|s) {
+		return 1;
+	}
+
+	return 0;
 }
 
 sub nocontent {
-	return ! hascontent(@_);
+	my $str = shift();
+
+	# nocontent() is just the inverse to hascontent()
+	my $ret = !(hascontent($str));
+
+	return $ret;
 }
 
 #

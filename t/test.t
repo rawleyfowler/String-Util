@@ -31,6 +31,13 @@ ok(!hascontent("   \t   \n\n  \r   \n\n\r     ") , "hascontent() whitespace stri
 ok(hascontent("0")                               , "hascontent() zero");
 ok(hascontent(" x ")                             , "hascontent() string with x");
 
+ok(nocontent("")     , "nocontent() ''");
+ok(nocontent(" ")    , "nocontent() space");
+ok(nocontent(undef)  , "nocontent() undef");
+ok(!nocontent('a')   , "nocontent() char");
+ok(!nocontent(' b ') , "nocontent() char with spaces");
+ok(!nocontent('word'), "nocontent() word");
+
 #
 # hascontent
 #------------------------------------------------------------------------------
