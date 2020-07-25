@@ -662,12 +662,14 @@ sub eqq {
 	my ($str1, $str2) = @_;
 
 	# if both defined
-	if ( defined($str1) && defined($str2) )
-		{ return $str1 eq $str2 }
+	if ( defined($str1) && defined($str2) ) {
+		return $str1 eq $str2
+	}
 
 	# if neither are defined
-	if ( (! defined($str1)) && (! defined($str2)) )
-		{ return 1 }
+	if ( (!defined($str1)) && (!defined($str2)) ) {
+		return 1
+	}
 
 	# only one is defined, so return false
 	return 0;
