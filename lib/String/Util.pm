@@ -737,10 +737,10 @@ seed.
 =cut
 
 sub randcrypt {
-	my ($pw) = @_;
-	my ($rv);
-	$rv = crypt($pw, randword(2));
-	return $rv;
+	my $pwd = shift();
+	my $ret = crypt($pwd, randword(2));
+
+	return $ret;
 }
 #
 # randcrypt
