@@ -231,26 +231,29 @@ sub rtrim {
 # no_space
 #
 
-=head2 no_space($string)
+=head2 nospace($string)
 
 Removes B<all> whitespace characters from the given string. This includes spaces
 between words.
 
-  $var = no_space("  Hello World!   "); # "HelloWorld!"
+  $var = nospace("  Hello World!   "); # "HelloWorld!"
 
 =cut
 
 sub no_space {
-	my ($val) = @_;
-
-	if (defined $val)
-		{ $val =~ s|\s+||gs }
-
-	return $val;
+	return nospace(@_);
 }
 
 # alias nospace to no_space
-sub nospace { return no_space(@_) }
+sub nospace {
+	my $val = shift();
+
+	if (defined $val) {
+		$val =~ s|\s+||gs;
+	}
+
+	return $val;
+}
 
 #
 # no_space
