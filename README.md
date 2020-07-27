@@ -9,12 +9,17 @@ strings in various ways.
 
 # INSTALLATION
 
-String::Util can be installed with the usual routine:
+    cpanm String::Util
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+# USAGE
+
+No functions are exported by default, they must be specified:
+
+    use String::Util qw(trim eqq contains)
+
+alternately you can use `:all` to export **all** of the functions
+
+    use String::Util qw(:all)
 
 # FUNCTIONS
 
@@ -59,14 +64,14 @@ ltrim() trims **leading** whitespace only.
 
 rtrim() trims **trailing** whitespace only.
 
-## no\_space($string)
+## nospace($string)
 
 Removes **all** whitespace characters from the given string. This includes spaces
 between words.
 
-    $var = no_space("  Hello World!   "); # "HelloWorld!"
+    $var = nospace("  Hello World!   "); # "HelloWorld!"
 
-## htmlesc(string)
+## htmlesc($string)
 
 Formats a string for literal output in HTML.  An undefined value is returned as
 an empty string.
@@ -220,11 +225,6 @@ Here are some examples and what they return.
 **Note:** neundef() is an alias to this function. It is considered deprecated.
 It may be removed in future versions.
 
-## randcrypt($string)
-
-Crypts the given string, seeding the encryption with a random two character
-seed.
-
 ## ords($string)
 
 Returns the given string represented as the ascii value of each character.
@@ -306,6 +306,15 @@ is ignored, so that two newlines separated by whitespace is compacted down to a
 single newline.
 
     $var = crunchlines("x\n\n\nx"); # "x\nx";
+
+## file\_get\_contents($string, $boolean)
+
+Read an entire file from disk into a string. Returns undef if the file
+cannot be read for any reason. Can also return the file as an array of
+lines.
+
+    $str   = file_get_contents("/tmp/file.txt");    # Return a string
+    @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
 
 # COPYRIGHT AND LICENSE
 
