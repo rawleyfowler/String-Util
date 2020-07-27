@@ -1,7 +1,8 @@
 package String::Util;
+
 use strict;
+use warnings;
 use Carp;
-use overload;
 use 5.010;
 
 # version
