@@ -939,30 +939,6 @@ sub startswith {
 	return $ret;
 }
 
-=head2 sanitize($string)
-
-Sanitize all non alpha-numeric characters in a string to underscores.
-This is useful to take a URL, or filename, or text description and know
-you can use it safely in a URL or a filename.
-
-B<Note:> This will remove any trailing or leading '_' on the string
-
-  $var = sanitize("http://www.google.com/") # http_www_google_com
-  $var = sanitize("foo_bar()";              # foo_bar
-  $var = sanitize("/path/to/file.txt");     # path_to_file_txt
-
-=cut
-
-sub sanitize {
-	my $str = shift();
-
-	$str =~ s/[\W_]+/_/g;
-	$str =~ s/\A_+//g;
-	$str =~ s/_+\z//g;
-
-	return $str;
-}
-
 =head2 endswith($string, $substring)
 
 Checks if the string ends with the characters in substring
@@ -1018,6 +994,32 @@ sub crunchlines {
 #
 # crunchlines
 #------------------------------------------------------------------------------
+
+=head2 sanitize($string)
+
+Sanitize all non alpha-numeric characters in a string to underscores.
+This is useful to take a URL, or filename, or text description and know
+you can use it safely in a URL or a filename.
+
+B<Note:> This will remove any trailing or leading '_' on the string
+
+  $var = sanitize("http://www.google.com/") # http_www_google_com
+  $var = sanitize("foo_bar()";              # foo_bar
+  $var = sanitize("/path/to/file.txt");     # path_to_file_txt
+
+=cut
+
+sub sanitize {
+	my $str = shift();
+
+	$str =~ s/[\W_]+/_/g;
+	$str =~ s/\A_+//g;
+	$str =~ s/_+\z//g;
+
+	return $str;
+}
+
+###########################################################################
 
 =head2 file_get_contents($string, $boolean)
 
