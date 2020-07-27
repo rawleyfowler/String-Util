@@ -132,16 +132,27 @@ C<nocontent()> returns the negation of C<hascontent()>.
 =cut
 
 sub hascontent {
-	my ($val) = @_;
+	my $val = shift();
 
-	defined($val) or return 0;
-	$val =~ m|\S|s or return 0;
+	if (!defined($val)) {
+		return 0;
+	}
 
-	return 1;
+	# If there are ANY non-space characters in it
+	if ($val =~ m|\S|s) {
+		return 1;
+	}
+
+	return 0;
 }
 
 sub nocontent {
-	return ! hascontent(@_);
+	my $str = shift();
+
+	# nocontent() is just the inverse to hascontent()
+	my $ret = !(hascontent($str));
+
+	return $ret;
 }
 
 #
@@ -221,26 +232,29 @@ sub rtrim {
 # no_space
 #
 
-=head2 no_space($string)
+=head2 nospace($string)
 
 Removes B<all> whitespace characters from the given string. This includes spaces
 between words.
 
-  $var = no_space("  Hello World!   "); # "HelloWorld!"
+  $var = nospace("  Hello World!   "); # "HelloWorld!"
 
 =cut
 
 sub no_space {
-	my ($val) = @_;
-
-	if (defined $val)
-		{ $val =~ s|\s+||gs }
-
-	return $val;
+	return nospace(@_);
 }
 
 # alias nospace to no_space
-sub nospace { return no_space(@_) }
+sub nospace {
+	my $val = shift();
+
+	if (defined $val) {
+		$val =~ s|\s+||gs;
+	}
+
+	return $val;
+}
 
 #
 # no_space
@@ -663,12 +677,14 @@ sub eqq {
 	my ($str1, $str2) = @_;
 
 	# if both defined
-	if ( defined($str1) && defined($str2) )
-		{ return $str1 eq $str2 }
+	if ( defined($str1) && defined($str2) ) {
+		return $str1 eq $str2
+	}
 
 	# if neither are defined
-	if ( (! defined($str1)) && (! defined($str2)) )
-		{ return 1 }
+	if ( (!defined($str1)) && (!defined($str2)) ) {
+		return 1
+	}
 
 	# only one is defined, so return false
 	return 0;
@@ -733,10 +749,11 @@ sub fullchomp {
 sub randcrypt {
 	carp("randcrypt() is deprecated and may be removed in future versions");
 
-	my ($pw) = @_;
-	my ($rv);
-	$rv = crypt($pw, randword(2));
-	return $rv;
+	my $pw = shift();
+	my $ret;
+	$ret = crypt($pw, randword(2));
+
+	return $ret;
 }
 #
 # randcrypt
