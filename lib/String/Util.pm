@@ -26,6 +26,16 @@ strings in various ways.
 
   cpanm String::Util
 
+=head1 USAGE
+
+No functions are exported by default, they must be specified:
+
+  use String::Util qw(trim eqq contains)
+
+alternately you can use C<:all> to export B<all> of the functions
+
+  use String::Util qw(:all)
+
 =head1 FUNCTIONS
 
 =cut
