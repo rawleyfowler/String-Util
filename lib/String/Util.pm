@@ -172,8 +172,8 @@ sub trim {
 		return "";
 	}
 
-	$s =~ s/^\s*//;
-	$s =~ s/\s*$//;
+	$s =~ s/^\s*//u;
+	$s =~ s/\s*$//u;
 
 	return $s;
 }
@@ -193,7 +193,7 @@ sub ltrim {
 		return "";
 	}
 
-	$s =~ s/^\s*//;
+	$s =~ s/^\s*//u;
 
 	return $s;
 }
@@ -205,7 +205,7 @@ sub rtrim {
 		return "";
 	}
 
-	$s =~ s/\s*$//;
+	$s =~ s/\s*$//u;
 
 	return $s;
 }
