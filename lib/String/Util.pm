@@ -48,7 +48,7 @@ push @EXPORT_OK, qw[
 	collapse     crunch     htmlesc    trim      ltrim
 	rtrim        define     repeat     unquote   no_space
 	nospace      fullchomp  randcrypt  jsquote   cellfill
-	crunchlines
+	crunchlines  file_get_contents
 ];
 
 # the following functions return true or false based on their input
@@ -992,6 +992,33 @@ sub crunchlines {
 # crunchlines
 #------------------------------------------------------------------------------
 
+=head2 file_get_contents($string, $boolean)
+
+Read an entire file from disk into a string. Returns undef if the file
+cannot be read for any reason. Can also return the file as an array of
+lines.
+
+  $str   = file_get_contents("/tmp/file.txt");    # Return a string
+  @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
+
+=cut
+
+sub file_get_contents {
+	my ($file, $ret_array) = @_;
+
+	open (my $fh, "<", $file) or return undef;
+
+	my $ret;
+	while (<$fh>) {
+		$ret .= $_;
+	}
+
+	if ($ret_array) {
+		return split(/\r?\n/,$ret);
+	}
+
+	return $ret;
+}
 
 # return true
 1;

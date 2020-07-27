@@ -216,4 +216,11 @@ ok(defined($val) && (length($val) == 20), 'randword');
 # randword
 #------------------------------------------------------------------------------
 
+# file_get_contents()
+$val    = file_get_contents(__FILE__);
+my @arr = file_get_contents(__FILE__, 1);
+
+ok(length($val) > 100, "file_get_contents string");
+ok(@arr > 10         , "file_get_contents array");
+
 done_testing();
