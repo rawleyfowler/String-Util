@@ -899,6 +899,9 @@ Checks if the string contains substring
   $var = contains("Hello world", "llo wor"); # true
   $var = contains("Hello world", "QQQ");     # false
 
+  # Also works with grep
+  @arr = grep { contains("cat") } @input;
+
 =cut
 
 sub contains {
@@ -923,6 +926,9 @@ Checks if the string starts with the characters in substring
   $var = startwidth("Hello world", "H");     # true
   $var = startwidth("Hello world", "Q");     # false
 
+  # Also works with grep
+  @arr = grep { startswith("X") } @input;
+
 =cut
 
 sub startswith {
@@ -946,6 +952,9 @@ Checks if the string ends with the characters in substring
   $var = endswidth("Hello world", "world");   # true
   $var = endswidth("Hello world", "d");       # true
   $var = endswidth("Hello world", "QQQ");     # false
+
+  # Also works with grep
+  @arr = grep { endswidth("z") } @input;
 
 =cut
 
