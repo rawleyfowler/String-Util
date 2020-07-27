@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+	- Deprecate randcrypt() as it's not secure in 2020
+
+	- Add file_get_contents()
+
+	- Make trim() unicode friendly
+
 1.30  2020-07-23 14:29:05 PDT
 
 	- Ownership transferred to Scott Baker
