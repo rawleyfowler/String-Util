@@ -24,12 +24,19 @@ ok(!defined collapse(undef), 'collapse undef should return undef');
 #------------------------------------------------------------------------------
 # hascontent
 #
-is(hascontent(undef), 0, "hascontent() undef");
+is(hascontent(undef), 0, "hascontent undef");
 
-ok(!hascontent('')                               , "hascontent() ''");
-ok(!hascontent("   \t   \n\n  \r   \n\n\r     ") , "hascontent() whitespace string");
-ok(hascontent("0")                               , "hascontent() zero");
-ok(hascontent(" x ")                             , "hascontent() string with x");
+ok(!hascontent('')                               , "hascontent ''");
+ok(!hascontent("   \t   \n\n  \r   \n\n\r     ") , "hascontent whitespace string");
+ok(hascontent("0")                               , "hascontent zero");
+ok(hascontent(" x ")                             , "hascontent string with x");
+
+ok(nocontent("")     , "nocontent ''");
+ok(nocontent(" ")    , "nocontent space");
+ok(nocontent(undef)  , "nocontent undef");
+ok(!nocontent('a')   , "nocontent char");
+ok(!nocontent(' b ') , "nocontent char with spaces");
+ok(!nocontent('word'), "nocontent word");
 
 #
 # hascontent
@@ -59,8 +66,9 @@ is(rtrim("\n\tPerl   ")        , "\n\tPerl" , 'rtrim');
 # no_space
 #
 
-is(no_space("  ok \n fine     ") , 'okfine' , 'no_space with whitespace');
-is(no_space("Perl")              , 'Perl'   , 'no_space no whitespace');
+is(nospace("  ok \n fine     "), 'okfine', 'nospace with whitespace');
+is(nospace("Perl")             , 'Perl'  , 'nospace no whitespace');
+is(nospace(undef)              , undef   , 'nospace undef');
 
 #
 # no_space
@@ -216,16 +224,11 @@ ok(defined($val) && (length($val) == 20), 'randword');
 # randword
 #------------------------------------------------------------------------------
 
+# file_get_contents()
+$val    = file_get_contents(__FILE__);
+my @arr = file_get_contents(__FILE__, 1);
 
-#------------------------------------------------------------------------------
-# randcrypt
-# Not sure how to test this besides making sure it actually runs.
-#
-$val = randcrypt('sekrit_password');
-ok(defined($val) && length($val) > 10, 'randcrypt');
-
-#
-# randcrypt
-#------------------------------------------------------------------------------
+ok(length($val) > 100, "file_get_contents string");
+ok(@arr > 10         , "file_get_contents array");
 
 done_testing();

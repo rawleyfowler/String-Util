@@ -1,7 +1,8 @@
 package String::Util;
+
 use strict;
+use warnings;
 use Carp;
-use overload;
 use 5.010;
 
 # version
@@ -23,12 +24,7 @@ strings in various ways.
 
 =head1 INSTALLATION
 
-String::Util can be installed with the usual routine:
-
-  perl Makefile.PL
-  make
-  make test
-  make install
+  cpanm String::Util
 
 =head1 FUNCTIONS
 
@@ -52,7 +48,7 @@ push @EXPORT_OK, qw[
 	collapse     crunch     htmlesc    trim      ltrim
 	rtrim        define     repeat     unquote   no_space
 	nospace      fullchomp  randcrypt  jsquote   cellfill
-	crunchlines
+	crunchlines  file_get_contents
 ];
 
 # the following functions return true or false based on their input
@@ -136,16 +132,27 @@ C<nocontent()> returns the negation of C<hascontent()>.
 =cut
 
 sub hascontent {
-	my ($val) = @_;
+	my $val = shift();
 
-	defined($val) or return 0;
-	$val =~ m|\S|s or return 0;
+	if (!defined($val)) {
+		return 0;
+	}
 
-	return 1;
+	# If there are ANY non-space characters in it
+	if ($val =~ m|\S|s) {
+		return 1;
+	}
+
+	return 0;
 }
 
 sub nocontent {
-	return ! hascontent(@_);
+	my $str = shift();
+
+	# nocontent() is just the inverse to hascontent()
+	my $ret = !(hascontent($str));
+
+	return $ret;
 }
 
 #
@@ -225,26 +232,29 @@ sub rtrim {
 # no_space
 #
 
-=head2 no_space($string)
+=head2 nospace($string)
 
 Removes B<all> whitespace characters from the given string. This includes spaces
 between words.
 
-  $var = no_space("  Hello World!   "); # "HelloWorld!"
+  $var = nospace("  Hello World!   "); # "HelloWorld!"
 
 =cut
 
 sub no_space {
-	my ($val) = @_;
-
-	if (defined $val)
-		{ $val =~ s|\s+||gs }
-
-	return $val;
+	return nospace(@_);
 }
 
 # alias nospace to no_space
-sub nospace { return no_space(@_) }
+sub nospace {
+	my $val = shift();
+
+	if (defined $val) {
+		$val =~ s|\s+||gs;
+	}
+
+	return $val;
+}
 
 #
 # no_space
@@ -256,7 +266,7 @@ sub nospace { return no_space(@_) }
 # htmlesc
 #
 
-=head2 htmlesc(string)
+=head2 htmlesc($string)
 
 Formats a string for literal output in HTML.  An undefined value is returned as
 an empty string.
@@ -667,12 +677,14 @@ sub eqq {
 	my ($str1, $str2) = @_;
 
 	# if both defined
-	if ( defined($str1) && defined($str2) )
-		{ return $str1 eq $str2 }
+	if ( defined($str1) && defined($str2) ) {
+		return $str1 eq $str2
+	}
 
 	# if neither are defined
-	if ( (! defined($str1)) && (! defined($str2)) )
-		{ return 1 }
+	if ( (!defined($str1)) && (!defined($str2)) ) {
+		return 1
+	}
 
 	# only one is defined, so return false
 	return 0;
@@ -734,18 +746,14 @@ sub fullchomp {
 # randcrypt
 #
 
-=head2 randcrypt($string)
-
-Crypts the given string, seeding the encryption with a random two character
-seed.
-
-=cut
-
 sub randcrypt {
-	my ($pw) = @_;
-	my ($rv);
-	$rv = crypt($pw, randword(2));
-	return $rv;
+	carp("randcrypt() is deprecated and may be removed in future versions");
+
+	my $pw = shift();
+	my $ret;
+	$ret = crypt($pw, randword(2));
+
+	return $ret;
 }
 #
 # randcrypt
@@ -1001,6 +1009,33 @@ sub crunchlines {
 # crunchlines
 #------------------------------------------------------------------------------
 
+=head2 file_get_contents($string, $boolean)
+
+Read an entire file from disk into a string. Returns undef if the file
+cannot be read for any reason. Can also return the file as an array of
+lines.
+
+  $str   = file_get_contents("/tmp/file.txt");    # Return a string
+  @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
+
+=cut
+
+sub file_get_contents {
+	my ($file, $ret_array) = @_;
+
+	open (my $fh, "<", $file) or return undef;
+
+	my $ret;
+	while (<$fh>) {
+		$ret .= $_;
+	}
+
+	if ($ret_array) {
+		return split(/\r?\n/,$ret);
+	}
+
+	return $ret;
+}
 
 # return true
 1;
@@ -1008,7 +1043,7 @@ sub crunchlines {
 
 __END__
 
-=head1 TERMS AND CONDITIONS
+=head1 COPYRIGHT AND LICENSE
 
 Copyright (c) 2012-2016 by Miko O'Sullivan.  All rights reserved.  This program
 is free software; you can redistribute it and/or modify it under the same terms
@@ -1016,11 +1051,9 @@ as Perl itself. This software comes with B<NO WARRANTY> of any kind.
 
 =head1 AUTHORS
 
-Miko O'Sullivan
-F<miko@idocs.com>
+Miko O'Sullivan <miko@idocs.com>
 
-Scott Baker
-F<scott@perturb.org>
+Scott Baker <scott@perturb.org>
 
 =cut
 
