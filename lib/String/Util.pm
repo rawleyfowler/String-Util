@@ -729,14 +729,9 @@ sub fullchomp {
 # randcrypt
 #
 
-=head2 randcrypt($string)
-
-Crypts the given string, seeding the encryption with a random two character
-seed.
-
-=cut
-
 sub randcrypt {
+	carp("randcrypt() is deprecated and may be removed in future versions");
+
 	my ($pw) = @_;
 	my ($rv);
 	$rv = crypt($pw, randword(2));

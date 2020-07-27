@@ -216,16 +216,4 @@ ok(defined($val) && (length($val) == 20), 'randword');
 # randword
 #------------------------------------------------------------------------------
 
-
-#------------------------------------------------------------------------------
-# randcrypt
-# Not sure how to test this besides making sure it actually runs.
-#
-$val = randcrypt('sekrit_password');
-ok(defined($val) && length($val) > 10, 'randcrypt');
-
-#
-# randcrypt
-#------------------------------------------------------------------------------
-
 done_testing();
