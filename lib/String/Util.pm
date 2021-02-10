@@ -190,8 +190,8 @@ rtrim() trims B<trailing> whitespace only.
 sub trim {
 	my $s = shift();
 
-	if (!defined($s) || length($s) == 0) {
-		return "";
+	if (!defined($s)) {
+		return undef;
 	}
 
 	$s =~ s/^\s*//u;
@@ -211,8 +211,8 @@ sub trim {
 sub ltrim {
 	my $s = shift();
 
-	if (!defined($s) || length($s) == 0) {
-		return "";
+	if (!defined($s)) {
+		return undef;
 	}
 
 	$s =~ s/^\s*//u;
@@ -223,8 +223,8 @@ sub ltrim {
 sub rtrim {
 	my $s = shift();
 
-	if (!defined($s) || length($s) == 0) {
-		return "";
+	if (!defined($s)) {
+		return undef;
 	}
 
 	$s =~ s/\s*$//u;
@@ -295,8 +295,7 @@ sub htmlesc {
 		$val =~ s|\"|&quot;|g;
 		$val =~ s|\<|&lt;|g;
 		$val =~ s|\>|&gt;|g;
-	}
-	else {
+	} else {
 		$val = '';
 	}
 
@@ -318,9 +317,7 @@ sub cellfill{
 
 	if (hascontent($val)) {
 		$val = htmlesc($val);
-	}
-
-	else {
+	} else {
 		$val = '&nbsp;';
 	}
 
@@ -344,6 +341,10 @@ surrounds the string in single quotes.  Returns the modified string.
 
 sub jsquote {
 	my ($str) = @_;
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	# Escape single quotes.
 	$str =~ s|'|\\'|gs;
@@ -557,11 +558,11 @@ would output something like this:
 
 # path information for WC
 our %PATHS = (
-	wc => '/usr/bin/wc',
-	shuf => '/usr/bin/shuf',
+	wc    => '/usr/bin/wc',
+	shuf  => '/usr/bin/shuf',
 	words => '/usr/share/dict/words',
-	head => '/usr/bin/head',
-	tail => '/usr/bin/tail',
+	head  => '/usr/bin/head',
+	tail  => '/usr/bin/tail',
 );
 
 sub randword {
@@ -905,8 +906,11 @@ Checks if the string contains substring
 =cut
 
 sub contains {
-	my $str    = shift() || "";
-	my $substr = shift();
+	my ($str, $substr) = @_;
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	if (!$substr) {
 		$substr = $str;
@@ -932,8 +936,11 @@ Checks if the string starts with the characters in substring
 =cut
 
 sub startswith {
-	my $str    = shift() || "";
-	my $substr = shift();
+	my ($str, $substr) = @_;
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	if (!$substr) {
 		$substr = $str;
@@ -959,8 +966,11 @@ Checks if the string ends with the characters in substring
 =cut
 
 sub endswith {
-	my $str    = shift() || "";
-	my $substr = shift();
+	my ($str, $substr) = @_;
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	if (!$substr) {
 		$substr = $str;
@@ -992,6 +1002,10 @@ single newline.
 sub crunchlines {
 	my ($str) = @_;
 
+	if (!defined($str)) {
+		return undef;
+	}
+
 	while($str =~ s|\n[ \t]*\n|\n|gs)
 		{}
 
@@ -1020,6 +1034,10 @@ B<Note:> This will remove any trailing or leading '_' on the string
 
 sub sanitize {
 	my $str = shift();
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	$str =~ s/[\W_]+/_/g;
 	$str =~ s/\A_+//g;
