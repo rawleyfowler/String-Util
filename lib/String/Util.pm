@@ -1033,17 +1033,23 @@ B<Note:> This will remove any trailing or leading '_' on the string
 =cut
 
 sub sanitize {
-	my $str = shift();
+    my $str = shift();
+    my $sep = shift() // "_";
 
-	if (!defined($str)) {
-		return undef;
-	}
+    if (!defined($str)) {
+        return undef;
+    }
 
-	$str =~ s/[\W_]+/_/g;
-	$str =~ s/\A_+//g;
-	$str =~ s/_+\z//g;
+    # Convert multiple non-word sequences to the separator
+    $str =~ s/[\W_]+/$sep/g;
 
-	return $str;
+    # The separator is a literal character so we quotemeta it
+    $sep = quotemeta($sep);
+    # Remove any separators at the beginning and end
+    $str =~ s/\A$sep+//;
+    $str =~ s/$sep+\z//;
+
+    return $str;
 }
 
 ###########################################################################

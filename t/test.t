@@ -220,6 +220,8 @@ is(sanitize("http://www.google.com/"), 'http_www_google_com', 'Sanitize URL');
 is(sanitize("foo_bar()")             , 'foo_bar'            , 'Sanitize function name');
 is(sanitize("/path/to/file.txt")     , 'path_to_file_txt'   , 'Sanitize path');
 
+is(sanitize("Hello there!!!", '.')   , 'Hello.there'        , 'Sanitize with a custom separator');
+
 #------------------------------------------------------------------------------
 # randword
 # Not sure how to test this besides making sure it actually runs.
