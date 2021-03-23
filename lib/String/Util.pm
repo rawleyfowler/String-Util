@@ -672,9 +672,9 @@ Returns true if the two given values are equal.  Also returns true if both
 are undef.  If only one is undef, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
-  $var = eqq('x', 'x'), "\n";      # True
-  $var = eqq('x', undef), "\n";    # False
-  $var = eqq(undef, undef), "\n";  # True
+  $var = eqq('x', 'x');     # True
+  $var = eqq('x', undef);   # False
+  $var = eqq(undef, undef); # True
 
 B<Note:> equndef() is an alias to this function. It is considered deprecated.
 It may be removed in future versions.
@@ -715,9 +715,9 @@ sub eqq {
 The opposite of neqq, returns true if the two values are *not* the same.
 Here are some examples and what they return.
 
-  $var = neqq('x', 'x'), "\n";      # False
-  $var = neqq('x', undef), "\n";    # True
-  $var = neqq(undef, undef), "\n";  # False
+  $var = neqq('x', 'x');     # False
+  $var = neqq('x', undef);   # True
+  $var = neqq(undef, undef); # False
 
 B<Note:> neundef() is an alias to this function. It is considered deprecated.
 It may be removed in future versions.
