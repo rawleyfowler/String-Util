@@ -1018,7 +1018,7 @@ sub crunchlines {
 # crunchlines
 #------------------------------------------------------------------------------
 
-=head2 sanitize($string)
+=head2 sanitize($string, $separator = "_")
 
 Sanitize all non alpha-numeric characters in a string to underscores.
 This is useful to take a URL, or filename, or text description and know
@@ -1029,6 +1029,7 @@ B<Note:> This will remove any trailing or leading '_' on the string
   $var = sanitize("http://www.google.com/") # http_www_google_com
   $var = sanitize("foo_bar()";              # foo_bar
   $var = sanitize("/path/to/file.txt");     # path_to_file_txt
+  $var = sanitize("Big yellow bird!", "."); # Big.yellow.bird
 
 =cut
 
