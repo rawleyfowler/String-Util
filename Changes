@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.32  2021-03-26 09:27:35 PDT
+
 	- Per bug reports, trim(undef) will return undef
 
 	- Add a custom separtor option to sanitize

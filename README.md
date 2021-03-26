@@ -206,9 +206,9 @@ Returns true if the two given values are equal.  Also returns true if both
 are undef.  If only one is undef, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
-    $var = eqq('x', 'x'), "\n";      # True
-    $var = eqq('x', undef), "\n";    # False
-    $var = eqq(undef, undef), "\n";  # True
+    $var = eqq('x', 'x');     # True
+    $var = eqq('x', undef);   # False
+    $var = eqq(undef, undef); # True
 
 **Note:** equndef() is an alias to this function. It is considered deprecated.
 It may be removed in future versions.
@@ -218,9 +218,9 @@ It may be removed in future versions.
 The opposite of neqq, returns true if the two values are \*not\* the same.
 Here are some examples and what they return.
 
-    $var = neqq('x', 'x'), "\n";      # False
-    $var = neqq('x', undef), "\n";    # True
-    $var = neqq(undef, undef), "\n";  # False
+    $var = neqq('x', 'x');     # False
+    $var = neqq('x', undef);   # True
+    $var = neqq(undef, undef); # False
 
 **Note:** neundef() is an alias to this function. It is considered deprecated.
 It may be removed in future versions.
@@ -271,15 +271,40 @@ Checks if the string contains substring
     $var = contains("Hello world", "llo wor"); # true
     $var = contains("Hello world", "QQQ");     # false
 
+    # Also works with grep
+    @arr = grep { contains("cat") } @input;
+
 ## startswith($string, $substring)
 
 Checks if the string starts with the characters in substring
 
-    $var = startwidth("Hello world", "Hello"); # true
-    $var = startwidth("Hello world", "H");     # true
-    $var = startwidth("Hello world", "Q");     # false
+    $var = startwith("Hello world", "Hello"); # true
+    $var = startwith("Hello world", "H");     # true
+    $var = startwith("Hello world", "Q");     # false
 
-## sanitize($string)
+    # Also works with grep
+    @arr = grep { startswith("X") } @input;
+
+## endswith($string, $substring)
+
+Checks if the string ends with the characters in substring
+
+    $var = endswith("Hello world", "world");   # true
+    $var = endswith("Hello world", "d");       # true
+    $var = endswith("Hello world", "QQQ");     # false
+
+    # Also works with grep
+    @arr = grep { endswith("z") } @input;
+
+## crunchlines($string)
+
+Compacts contiguous newlines into single newlines.  Whitespace between newlines
+is ignored, so that two newlines separated by whitespace is compacted down to a
+single newline.
+
+    $var = crunchlines("x\n\n\nx"); # "x\nx";
+
+## sanitize($string, $separator = "\_")
 
 Sanitize all non alpha-numeric characters in a string to underscores.
 This is useful to take a URL, or filename, or text description and know
@@ -290,22 +315,7 @@ you can use it safely in a URL or a filename.
     $var = sanitize("http://www.google.com/") # http_www_google_com
     $var = sanitize("foo_bar()";              # foo_bar
     $var = sanitize("/path/to/file.txt");     # path_to_file_txt
-
-## endswith($string, $substring)
-
-Checks if the string ends with the characters in substring
-
-    $var = endswidth("Hello world", "world");   # true
-    $var = endswidth("Hello world", "d");       # true
-    $var = endswidth("Hello world", "QQQ");     # false
-
-## crunchlines($string)
-
-Compacts contiguous newlines into single newlines.  Whitespace between newlines
-is ignored, so that two newlines separated by whitespace is compacted down to a
-single newline.
-
-    $var = crunchlines("x\n\n\nx"); # "x\nx";
+    $var = sanitize("Big yellow bird!", "."); # Big.yellow.bird
 
 ## file\_get\_contents($string, $boolean)
 
