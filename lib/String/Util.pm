@@ -15,11 +15,11 @@ our $VERSION = '1.33';
 
 =head1 NAME
 
-String::Util -- String processing utility functions
+B<String::Util> -- String processing utility functions
 
 =head1 DESCRIPTION
 
-String::Util provides a collection of small, handy functions for processing
+B<String::Util> provides a collection of small, handy functions for processing
 strings in various ways.
 
 =head1 INSTALLATION
@@ -113,7 +113,7 @@ sub collapse {
 
 =head2 hascontent($scalar), nocontent($scalar)
 
-hascontent() returns true if the given argument is defined and contains
+C<hascontent()> returns true if the given argument is defined and contains
 something besides whitespace.
 
 An undefined value returns false.  An empty string returns false.  A value
@@ -397,8 +397,8 @@ command outputs "Fred" three times:
 
   print repeat('Fred', 3), "\n";
 
-Note that repeat() was created a long time based on a misunderstanding of how
-the perl operator 'x' works.  The following command using 'x' would perform
+Note that C<repeat()> was created a long time based on a misunderstanding of how
+the perl operator 'x' works.  The following command using C<x> would perform
 exactly the same as the above command.
 
   print 'Fred' x 3, "\n";
@@ -424,7 +424,7 @@ sub repeat {
 =head2 eqq($scalar1, $scalar2)
 
 Returns true if the two given values are equal.  Also returns true if both
-are undef.  If only one is undef, or if they are both defined but different,
+are C<undef>.  If only one is C<undef>, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
   $var = eqq('x', 'x');     # True
@@ -461,7 +461,7 @@ sub eqq {
 
 =head2 neqq($scalar1, $scalar2)
 
-The opposite of neqq, returns true if the two values are *not* the same.
+The opposite of C<neqq>, returns true if the two values are *not* the same.
 Here are some examples and what they return.
 
   $var = neqq('x', 'x');     # False
@@ -571,7 +571,7 @@ sub ords {
 
 =head2 deords($string)
 
-Takes the output from ords() and returns the string that original created that
+Takes the output from C<ords()> and returns the string that original created that
 output.
 
   $var = deords('{72}{101}{110}{100}{114}{105}{120}'); # 'Hendrix'
