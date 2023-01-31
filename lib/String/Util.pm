@@ -771,6 +771,8 @@ lines.
   $str   = file_get_contents("/tmp/file.txt");    # Return a string
   @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
 
+B<Note:> If you opt to return an array, the lines are run through C<trim()>
+
 =cut
 
 sub file_get_contents {
@@ -778,16 +780,23 @@ sub file_get_contents {
 
 	open (my $fh, "<", $file) or return undef;
 
-	my $ret;
-	while (<$fh>) {
-		$ret .= $_;
-	}
-
 	if ($ret_array) {
-		return split(/\r?\n/,$ret);
-	}
+		my @ret;
 
-	return $ret;
+		while (my $line = readline($fh)) {
+			$line = trim($line);
+			push(@ret, $line);
+		}
+
+		return @ret;
+	} else {
+		my $ret = '';
+		while (my $line = readline($fh)) {
+			$ret .= $line;
+		}
+
+		return $ret;
+	}
 }
 
 # return true
