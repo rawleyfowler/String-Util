@@ -1,10 +1,10 @@
 # NAME
 
-String::Util -- String processing utility functions
+**String::Util** -- String processing utility functions
 
 # DESCRIPTION
 
-String::Util provides a collection of small, handy functions for processing
+**String::Util** provides a collection of small, handy functions for processing
 strings in various ways.
 
 # INSTALLATION
@@ -33,7 +33,7 @@ undefined output.
 
 ## hascontent($scalar), nocontent($scalar)
 
-hascontent() returns true if the given argument is defined and contains
+`hascontent()` returns true if the given argument is defined and contains
 something besides whitespace.
 
 An undefined value returns false.  An empty string returns false.  A value
@@ -110,8 +110,8 @@ command outputs "Fred" three times:
 
     print repeat('Fred', 3), "\n";
 
-Note that repeat() was created a long time based on a misunderstanding of how
-the perl operator 'x' works.  The following command using 'x' would perform
+Note that `repeat()` was created a long time based on a misunderstanding of how
+the perl operator 'x' works.  The following command using `x` would perform
 exactly the same as the above command.
 
     print 'Fred' x 3, "\n";
@@ -121,7 +121,7 @@ Use whichever you prefer.
 ## eqq($scalar1, $scalar2)
 
 Returns true if the two given values are equal.  Also returns true if both
-are undef.  If only one is undef, or if they are both defined but different,
+are `undef`.  If only one is `undef`, or if they are both defined but different,
 returns false. Here are some examples and what they return.
 
     $var = eqq('x', 'x');     # True
@@ -130,7 +130,7 @@ returns false. Here are some examples and what they return.
 
 ## neqq($scalar1, $scalar2)
 
-The opposite of neqq, returns true if the two values are \*not\* the same.
+The opposite of `neqq`, returns true if the two values are \*not\* the same.
 Here are some examples and what they return.
 
     $var = neqq('x', 'x');     # False
@@ -170,7 +170,7 @@ Returns the given string represented as the ascii value of each character.
 
 ## deords($string)
 
-Takes the output from ords() and returns the string that original created that
+Takes the output from `ords()` and returns the string that original created that
 output.
 
     $var = deords('{72}{101}{110}{100}{114}{105}{120}'); # 'Hendrix'
@@ -237,6 +237,12 @@ lines.
 
     $str   = file_get_contents("/tmp/file.txt");    # Return a string
     @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
+
+**Note:** If you opt to return an array, carriage returns and line feeds are
+removed from the end of each line.
+
+**Note:** File is read in **UTF-8** mode, unless `$FGC_MODE` is set to an
+appropriate encoding.
 
 # COPYRIGHT AND LICENSE
 
