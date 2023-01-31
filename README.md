@@ -29,9 +29,6 @@ alternately you can use `:all` to export **all** of the functions
 Also removes all leading and trailing whitespace.  Undefined input results in
 undefined output.
 
-**Note:** `crunch()` is an alias to this function. It is considered deprecated.
-It may be removed in future versions.
-
     $var = collapse("  Hello     world!    "); # "Hello world!"
 
 ## hascontent($scalar), nocontent($scalar)
@@ -56,13 +53,12 @@ zero) returns true.
 ## trim($string), ltrim($string), rtrim($string)
 
 Returns the string with all leading and trailing whitespace removed.
-Trim on undef returns "".
 
     $var = trim(" my string  "); # "my string"
 
-ltrim() trims **leading** whitespace only.
+`ltrim()` trims **leading** whitespace only.
 
-rtrim() trims **trailing** whitespace only.
+`rtrim()` trims **trailing** whitespace only.
 
 ## nospace($string)
 
@@ -122,84 +118,6 @@ exactly the same as the above command.
 
 Use whichever you prefer.
 
-## randword($length, %options)
-
-Returns a random string of characters. String will not contain any vowels (to
-avoid distracting dirty words). First argument is the length of the return
-string. So this code:
-
-    foreach my $idx (1..3) {
-        print randword(4), "\n";
-    }
-
-would output something like this:
-
-    kBGV
-    NCWB
-    3tHJ
-
-If the string 'dictionary' is sent instead of an integer, then a word is
-randomly selected from a dictionary file.  By default, the dictionary file
-is assumed to be at /usr/share/dict/words and the shuf command is used to
-pull out a word.  The hash %String::Util::PATHS sets the paths to the
-dictionary file and the shuf executable.  Modify that hash to change the paths.
-So this code:
-
-    foreach my $idx (1..3) {
-        print randword('dictionary'), "\n";
-    }
-
-would output something like this:
-
-    mustache
-    fronds
-    browning
-
-**option:** alpha
-
-If the alpha option is true, only alphabetic characters are returned, no
-numerals. For example, this code:
-
-    foreach my $idx (1..3) {
-        print randword(4, alpha=>1), "\n";
-    }
-
-would output something like this:
-
-    qrML
-    wmWf
-    QGvF
-
-**option:** numerals
-
-If the numerals option is true, only numerals are returned, no alphabetic
-characters. So this code:
-
-    foreach my $idx (1..3) {
-        print randword(4, numerals=>1), "\n";
-    }
-
-would output something like this:
-
-    3981
-    4734
-    2657
-
-**option:** strip\_vowels
-
-This option is true by default.  If true, vowels are not included in the
-returned random string. So this code:
-
-    foreach my $idx (1..3) {
-        print randword(4, strip_vowels=>1), "\n";
-    }
-
-would output something like this:
-
-    Sk3v
-    pV5z
-    XhSX
-
 ## eqq($scalar1, $scalar2)
 
 Returns true if the two given values are equal.  Also returns true if both
@@ -210,9 +128,6 @@ returns false. Here are some examples and what they return.
     $var = eqq('x', undef);   # False
     $var = eqq(undef, undef); # True
 
-**Note:** equndef() is an alias to this function. It is considered deprecated.
-It may be removed in future versions.
-
 ## neqq($scalar1, $scalar2)
 
 The opposite of neqq, returns true if the two values are \*not\* the same.
@@ -221,9 +136,6 @@ Here are some examples and what they return.
     $var = neqq('x', 'x');     # False
     $var = neqq('x', undef);   # True
     $var = neqq(undef, undef); # False
-
-**Note:** neundef() is an alias to this function. It is considered deprecated.
-It may be removed in future versions.
 
 ## ords($string)
 
