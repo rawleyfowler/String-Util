@@ -177,13 +177,12 @@ sub nocontent {
 =head2 trim($string), ltrim($string), rtrim($string)
 
 Returns the string with all leading and trailing whitespace removed.
-Trim on undef returns "".
 
   $var = trim(" my string  "); # "my string"
 
-ltrim() trims B<leading> whitespace only.
+C<ltrim()> trims B<leading> whitespace only.
 
-rtrim() trims B<trailing> whitespace only.
+C<rtrim()> trims B<trailing> whitespace only.
 
 =cut
 
