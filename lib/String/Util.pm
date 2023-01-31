@@ -3,7 +3,7 @@ package String::Util;
 use strict;
 use warnings;
 use Carp;
-use 5.014;
+use v5.14;
 
 # version
 our $VERSION  = '1.33';
