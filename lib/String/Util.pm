@@ -6,8 +6,8 @@ use Carp;
 use 5.014;
 
 # version
-our $VERSION = '1.33';
-
+our $VERSION  = '1.33';
+our $FGC_MODE = 'UTF-8';
 
 #------------------------------------------------------------------------------
 # opening POD
@@ -774,12 +774,16 @@ lines.
 B<Note:> If you opt to return an array, carriage returns and line feeds are
 removed from the end of each line.
 
+B<Note:> File is read in B<UTF-8> mode, unless C<$FGC_MODE> is set to an
+appropriate encoding.
+
 =cut
 
 sub file_get_contents {
 	my ($file, $ret_array) = @_;
 
 	open (my $fh, "<", $file) or return undef;
+	binmode($fh, ":encoding($FGC_MODE)");
 
 	if ($ret_array) {
 		my @ret;
