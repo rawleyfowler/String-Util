@@ -771,7 +771,8 @@ lines.
   $str   = file_get_contents("/tmp/file.txt");    # Return a string
   @lines = file_get_contents("/tmp/file.txt", 1); # Return an array
 
-B<Note:> If you opt to return an array, the lines are run through C<trim()>
+B<Note:> If you opt to return an array, carriage returns and line feeds are
+removed from the end of each line.
 
 =cut
 
@@ -784,7 +785,7 @@ sub file_get_contents {
 		my @ret;
 
 		while (my $line = readline($fh)) {
-			$line = trim($line);
+			$line =~ s/[\r\n]*$//; # Remove CR/LF
 			push(@ret, $line);
 		}
 
