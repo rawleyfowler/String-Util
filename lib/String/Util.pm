@@ -605,7 +605,10 @@ Checks if the string contains substring
 
   $var = contains("Hello world", "Hello");   # true
   $var = contains("Hello world", "llo wor"); # true
+  $var = contains("Hello world", "");        # true
   $var = contains("Hello world", "QQQ");     # false
+  $var = contains(undef, "QQQ");             # false
+  $var = contains("Hello world", undef);     # false
 
   # Also works with grep
   @arr = grep { contains("cat") } @input;
@@ -613,16 +616,9 @@ Checks if the string contains substring
 =cut
 
 sub contains {
-	my ($str, $substr) = @_;
+	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
 
-	if (!defined($str)) {
-		return undef;
-	}
-
-	if (!$substr) {
-		$substr = $str;
-		$str    = $_;
-	}
+   return !!0 unless defined($str) && defined($substr);
 
 	my $ret = index($str, $substr, 0) != -1;
 
@@ -635,7 +631,10 @@ Checks if the string starts with the characters in substring
 
   $var = startwith("Hello world", "Hello"); # true
   $var = startwith("Hello world", "H");     # true
+  $var = startwith("Hello world", "");      # true
   $var = startwith("Hello world", "Q");     # false
+  $var = startwith(undef, "Q");             # false
+  $var = startwith("Hello world", undef);   # false
 
   # Also works with grep
   @arr = grep { startswith("X") } @input;
@@ -643,16 +642,9 @@ Checks if the string starts with the characters in substring
 =cut
 
 sub startswith {
-	my ($str, $substr) = @_;
+	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
 
-	if (!defined($str)) {
-		return undef;
-	}
-
-	if (!$substr) {
-		$substr = $str;
-		$str    = $_;
-	}
+   return !!0 unless defined($str) && defined($substr);
 
 	my $ret = index($str, $substr, 0) == 0;
 
@@ -665,7 +657,10 @@ Checks if the string ends with the characters in substring
 
   $var = endswith("Hello world", "world");   # true
   $var = endswith("Hello world", "d");       # true
+  $var = endswith("Hello world", "");        # true
   $var = endswith("Hello world", "QQQ");     # false
+  $var = endswith(undef, "QQQ");             # false
+  $var = endswith("Hello world", undef);     # false
 
   # Also works with grep
   @arr = grep { endswith("z") } @input;
@@ -673,16 +668,9 @@ Checks if the string ends with the characters in substring
 =cut
 
 sub endswith {
-	my ($str, $substr) = @_;
+	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
 
-	if (!defined($str)) {
-		return undef;
-	}
-
-	if (!$substr) {
-		$substr = $str;
-		$str    = $_;
-	}
+   return !!0 unless defined($str) && defined($substr);
 
 	my $len   = length($substr);
 	my $start = length($str) - $len;
