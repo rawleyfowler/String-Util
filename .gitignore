@@ -7,3 +7,4 @@ pod2htmd.tmp
 String-Util-*
 Build
 _build*
+Makefile.old
