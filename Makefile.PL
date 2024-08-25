@@ -19,7 +19,9 @@ my %WriteMakefileArgs = (
     PREREQ_PM => {
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'String-Util-*' },
+    clean => {
+		FILES => ['String-Util-*', 'MYMETA.*']
+	},
 
     META_MERGE => {
         'meta-spec' => { version => 2 },
