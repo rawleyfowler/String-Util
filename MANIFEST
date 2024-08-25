@@ -1,0 +1,9 @@
+Changes
+cpanfile
+LICENSE
+Makefile.PL
+MANIFEST
+README.md
+lib/String/Util.pm
+t/test.t
+docs/index.html
