@@ -6,4 +6,4 @@ MANIFEST
 README.md
 lib/String/Util.pm
 t/test.t
-docs/index.html
+t/string-contains.t
