@@ -181,7 +181,10 @@ Checks if the string contains substring
 
     $var = contains("Hello world", "Hello");   # true
     $var = contains("Hello world", "llo wor"); # true
+    $var = contains("Hello world", "");        # true
     $var = contains("Hello world", "QQQ");     # false
+    $var = contains(undef, "QQQ");             # false
+    $var = contains("Hello world", undef);     # false
 
     # Also works with grep
     @arr = grep { contains("cat") } @input;
@@ -192,7 +195,10 @@ Checks if the string starts with the characters in substring
 
     $var = startwith("Hello world", "Hello"); # true
     $var = startwith("Hello world", "H");     # true
+    $var = startwith("Hello world", "");      # true
     $var = startwith("Hello world", "Q");     # false
+    $var = startwith(undef, "Q");             # false
+    $var = startwith("Hello world", undef);   # false
 
     # Also works with grep
     @arr = grep { startswith("X") } @input;
@@ -203,7 +209,10 @@ Checks if the string ends with the characters in substring
 
     $var = endswith("Hello world", "world");   # true
     $var = endswith("Hello world", "d");       # true
+    $var = endswith("Hello world", "");        # true
     $var = endswith("Hello world", "QQQ");     # false
+    $var = endswith(undef, "QQQ");             # false
+    $var = endswith("Hello world", undef);     # false
 
     # Also works with grep
     @arr = grep { endswith("z") } @input;
