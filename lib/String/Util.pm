@@ -616,9 +616,17 @@ Checks if the string contains substring
 =cut
 
 sub contains {
-	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
+	my ($str, $substr) = @_;
 
-   return !!0 unless defined($str) && defined($substr);
+	# If we don't see a substr we operate on $_ grep/map style
+	if (!defined($substr)) {
+		$substr = $str;
+		$str    = $_;
+	}
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	my $ret = index($str, $substr, 0) != -1;
 
@@ -642,9 +650,17 @@ Checks if the string starts with the characters in substring
 =cut
 
 sub startswith {
-	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
+	my ($str, $substr) = @_;
 
-   return !!0 unless defined($str) && defined($substr);
+	# If we don't see a substr we operate on $_ grep/map style
+	if (!defined($substr)) {
+		$substr = $str;
+		$str    = $_;
+	}
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	my $ret = index($str, $substr, 0) == 0;
 
@@ -668,9 +684,17 @@ Checks if the string ends with the characters in substring
 =cut
 
 sub endswith {
-	my ($str, $substr) = @_ == 1 ? ($_, $_[0]) : @_;
+	my ($str, $substr) = @_;
 
-   return !!0 unless defined($str) && defined($substr);
+	# If we don't see a substr we operate on $_ grep/map style
+	if (!defined($substr)) {
+		$substr = $str;
+		$str    = $_;
+	}
+
+	if (!defined($str)) {
+		return undef;
+	}
 
 	my $len   = length($substr);
 	my $start = length($str) - $len;
