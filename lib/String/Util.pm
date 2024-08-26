@@ -60,7 +60,7 @@ push @EXPORT_OK, qw[
 	collapse     htmlesc    trim      ltrim
 	rtrim        repeat     unquote   no_space
 	nospace      jsquote    crunchlines
-	file_get_contents
+	file_get_contents		substr_count
 ];
 
 # the following functions return true or false based on their input
@@ -817,6 +817,43 @@ sub file_get_contents {
 		return $ret;
 	}
 }
+
+#########################################################################
+
+=head2 substr_count($haystack, $needle)
+
+Count the occurences of a substr inside of a larger string. Returns
+an integer value with the number of matches, or C<undef> if the input
+is invalid.
+
+  my $cnt = substr_count("Perl is really rad", "r"); # 3
+  my $num = substr_count("Perl is really rad", "Q"); # 0
+
+=cut
+
+sub substr_count {
+	my ($haystack, $needle) = @_;
+
+	if (!defined($needle) || !defined($haystack)) { return undef; }
+	if ($haystack eq ''   || $needle eq '')       { return 0; }
+
+	my $pos     = 0;
+	my $matches = 0;
+
+	while (1) {
+		$pos = index($haystack, $needle, $pos);
+
+		if ($pos < 0) {
+			last;
+		}
+
+		$matches++;
+		$pos++;
+	}
+
+	return $matches;
+}
+
 
 # return true
 1;
