@@ -621,12 +621,12 @@ sub contains {
 	my ($str, $substr) = @_;
 
 	# If we don't see a substr we operate on $_ grep/map style
-	if (!defined($substr)) {
+	if (scalar(@_) == 1) {
 		$substr = $str;
 		$str    = $_;
 	}
 
-	if (!defined($str)) {
+	if (!defined($str) || !defined($substr)) {
 		return undef;
 	}
 
@@ -655,12 +655,12 @@ sub startswith {
 	my ($str, $substr) = @_;
 
 	# If we don't see a substr we operate on $_ grep/map style
-	if (!defined($substr)) {
+	if (scalar(@_) == 1) {
 		$substr = $str;
 		$str    = $_;
 	}
 
-	if (!defined($str)) {
+	if (!defined($str) || !defined($substr)) {
 		return undef;
 	}
 
@@ -689,12 +689,12 @@ sub endswith {
 	my ($str, $substr) = @_;
 
 	# If we don't see a substr we operate on $_ grep/map style
-	if (!defined($substr)) {
+	if (scalar(@_) == 1) {
 		$substr = $str;
 		$str    = $_;
 	}
 
-	if (!defined($str)) {
+	if (!defined($str) || !defined($substr)) {
 		return undef;
 	}
 
