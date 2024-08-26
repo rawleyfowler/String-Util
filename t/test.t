@@ -83,35 +83,42 @@ is(nospace(undef)              , undef   , 'nospace undef');
 #------------------------------------------------------------------------------
 # startswith
 $val = "Quick brown fox";
+$_ = 7; # Populate $_ to fuzz the tests
 
 ok(startswith("Quick brown fox" , 'Q')     , "Startswidth char");
 ok(startswith("Quick brown fox" , 'Quick') , "Startswidth word");
 ok(!startswith("Quick brown fox", 'z')     , "Does NOT start with char");
 ok(!startswith("Quick brown fox", 'Qqq')   , "Does NOT start with string");
 is(startswith(undef, 'foo')     , undef    , "Startswidth undef");
+is(startswith('foo', undef)     , undef    , "Second param undef");
 #------------------------------------------------------------------------------
 
 
 #------------------------------------------------------------------------------
 # endswith
 $val = "Quick brown fox";
+$_ = 7; # Populate $_ to fuzz the tests
 
-ok(endswith($val, 'x')    , "Endswith char");
-ok(endswith($val, 'fox')  , "Endswith word");
-ok(endswith($val, ' fox') , "Endswith space word");
-ok(!endswith($val, 'foq') , "Does not end with string");
-is(endswith(undef, 'foo'), undef    , "Endswith undef");
+ok(endswith($val , 'x')    , "Endswith char");
+ok(endswith($val , 'fox')  , "Endswith word");
+ok(endswith($val , ' fox') , "Endswith space word");
+ok(!endswith($val, 'foq')  , "Does not end with string");
+is(endswith(undef, 'foo')  , undef , "Endswith undef");
+is(endswith('foo', undef)  , undef , "Second param undef");
 #------------------------------------------------------------------------------
 
 
 #------------------------------------------------------------------------------
 # contains
+$_ = 7; # Populate $_ to fuzz the tests
+
 $val = "Quick brown fox";
-ok(contains($val, 'brown') , "Contains word");
-ok(contains($val, 'uick')  , "Contains word 2");
-ok(contains($val, 'n f')   , "Contains word with space");
-ok(!contains($val, 'bri')  , "Does not contains word");
-is(contains(undef, 'foo')  , undef    , "Contains undef");
+ok(contains($val , 'brown') , "Contains word");
+ok(contains($val , 'uick')  , "Contains word 2");
+ok(contains($val , 'n f')   , "Contains word with space");
+ok(!contains($val, 'bri')   , "Does not contains word");
+is(contains(undef, 'foo')   , undef , "Contains undef");
+is(contains('foo', undef)   , undef , "Second param undef");
 #------------------------------------------------------------------------------
 
 
