@@ -180,10 +180,13 @@ ok(@arr > 10         , "file_get_contents array");
 ################################################################################
 # substr_count()
 ################################################################################
-is(substr_count("Perl is really rad", "r")  , 3    , "Substr count found 3");
-is(substr_count("Perl is really rad", "Q")  , 0    , "Substr count found 0");
-is(substr_count("Perl is really rad", undef), undef, "Substr count invalid input #1");
-is(substr_count(undef               , "Q")  , undef, "Substr count invalid input #2");
+is(substr_count("Perl is really rad", "r")   , 3    , "Substr count found 3");
+is(substr_count("Perl is really rad", "Q")   , 0    , "Substr count found 0");
+is(substr_count("Perl is really rad", "rad") , 1    , "Substr count word");
+is(substr_count("Perl is really rad", "perl"), 0    , "Substr count word");
+is(substr_count("Perl is really rad", "Perl"), 1    , "Substr count word case sensitive");
+is(substr_count("Perl is really rad", undef) , undef, "Substr count invalid input #1");
+is(substr_count(undef               , "Q")   , undef, "Substr count invalid input #2");
 
 ################################################################################
 
