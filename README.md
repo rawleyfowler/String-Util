@@ -253,6 +253,15 @@ removed from the end of each line.
 **Note:** File is read in **UTF-8** mode, unless `$FGC_MODE` is set to an
 appropriate encoding.
 
+## substr\_count($haystack, $needle)
+
+Count the occurences of a substr inside of a larger string. Returns
+an integer value with the number of matches, or `undef` if the input
+is invalid.
+
+    my $cnt = substr_count("Perl is really rad", "r"); # 3
+    my $num = substr_count("Perl is really rad", "Q"); # 0
+
 # COPYRIGHT AND LICENSE
 
 Copyright (c) 2012-2016 by Miko O'Sullivan.  All rights reserved.  This program
