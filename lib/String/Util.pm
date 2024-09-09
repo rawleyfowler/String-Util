@@ -639,12 +639,12 @@ sub contains {
 
 Checks if the string starts with the characters in substring
 
-  $var = startwith("Hello world", "Hello"); # true
-  $var = startwith("Hello world", "H");     # true
-  $var = startwith("Hello world", "");      # true
-  $var = startwith("Hello world", "Q");     # false
-  $var = startwith(undef, "Q");             # false
-  $var = startwith("Hello world", undef);   # false
+  $var = startswith("Hello world", "Hello"); # true
+  $var = startswith("Hello world", "H");     # true
+  $var = startswith("Hello world", "");      # true
+  $var = startswith("Hello world", "Q");     # false
+  $var = startswith(undef, "Q");             # false
+  $var = startswith("Hello world", undef);   # false
 
   # Also works with grep
   @arr = grep { startswith("X") } @input;
